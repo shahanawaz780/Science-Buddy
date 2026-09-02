@@ -1,0 +1,928 @@
+{
+  "metadata": {
+    "product": "Science Buddy",
+    "phase": "MVP Phase 1",
+    "board": "CBSE",
+    "grade": 6,
+    "subject": "Science",
+    "textbook": "Curiosity",
+    "chapter_number": 1,
+    "chapter_title": "The Wonderful World of Science",
+    "source_file": "NCERT_Class_6_Science_Chapter_1_Curiosity.pdf",
+    "source_basis": "Supplied PDF only; no outside curriculum content added.",
+    "note": "The supplied PDF is 2 pages. Content should be manually validated against the full textbook edition before production use."
+  },
+  "learning_objectives": [
+    "Understand that science is a systematic way of thinking, observing, experimenting and understanding the physical and natural world.",
+    "Recognize curiosity and continuous questioning as a core requirement for learning science.",
+    "Understand the idea of science as an unending jigsaw puzzle in which discoveries lead to further questions.",
+    "Describe the five-step Scientific Method presented in the chapter: Observation, Questioning, Hypothesizing, Testing & Experimentation, and Analysis & Conclusion.",
+    "Identify how scientific thinking can be applied to everyday situations.",
+    "Recognize the broad themes that will be explored in later Grade 6 Science chapters.",
+    "Understand that science is a collaborative human effort involving classmates, teachers and family members."
+  ],
+  "topics": [
+    {
+      "topic_id": "T1",
+      "title": "Welcome to the World of Science",
+      "source_section": "1. Welcome to the World of Science",
+      "learning_objective": "Explain what science is and why curiosity is important.",
+      "lesson": {
+        "concept_explanation": "Science is not merely a collection of facts to memorize. It is a systematic way of thinking, observing, experimenting and understanding the physical and natural world around us.",
+        "simple_explanation": "Science starts when we notice something, become curious about it, ask questions and try to understand what is happening.",
+        "key_points": [
+          "Human beings are naturally curious about their surroundings.",
+          "Science involves thinking, observing, experimenting and understanding.",
+          "Curiosity means having the desire to ask Why?, How? and What if?",
+          "Science can be found in everyday surroundings and in the natural world."
+        ],
+        "important_terms": [
+          {
+            "term": "Science",
+            "meaning": "A systematic way of thinking, observing, experimenting and understanding the physical and natural world."
+          },
+          {
+            "term": "Curiosity",
+            "meaning": "The desire to ask questions and explore."
+          }
+        ],
+        "real_life_examples": [
+          "Wondering why something happens in the kitchen.",
+          "Observing plants and asking questions about their growth.",
+          "Noticing changes in the environment."
+        ],
+        "quick_check": [
+          "Why is science more than memorizing facts?",
+          "What three types of questions are highlighted as expressions of curiosity?"
+        ]
+      }
+    },
+    {
+      "topic_id": "T2",
+      "title": "Science as an Unending Jigsaw Puzzle",
+      "source_section": "2. Science as an Unending Jigsaw Puzzle",
+      "learning_objective": "Explain why scientific knowledge continues to grow.",
+      "lesson": {
+        "concept_explanation": "Science can be imagined as a giant, infinite jigsaw puzzle of the universe. Every scientific inquiry or discovery adds another piece. Each new piece of knowledge can unlock further questions and new areas of study.",
+        "simple_explanation": "Learning one scientific idea can make us curious about something new. So, there is always more to discover.",
+        "key_points": [
+          "Science has no final limit to what can be discovered.",
+          "New discoveries add pieces to our understanding.",
+          "New knowledge can create new questions.",
+          "Simple everyday observations can lead to important scientific breakthroughs."
+        ],
+        "important_terms": [
+          {
+            "term": "Scientific inquiry",
+            "meaning": "A process of investigating questions and seeking understanding."
+          },
+          {
+            "term": "Discovery",
+            "meaning": "New knowledge gained through investigation or observation."
+          }
+        ],
+        "real_life_examples": [
+          "An everyday observation may lead someone to investigate a puzzling phenomenon."
+        ],
+        "quick_check": [
+          "Why is science compared with an unending jigsaw puzzle?",
+          "How can a new discovery lead to further questions?"
+        ]
+      }
+    },
+    {
+      "topic_id": "T3",
+      "title": "How Do Scientists Work? — The Scientific Method",
+      "source_section": "3. How Do Scientists Work? (The Scientific Method)",
+      "learning_objective": "Describe and apply the five steps of the Scientific Method.",
+      "lesson": {
+        "concept_explanation": "Scientists do not rely on guesswork alone. They use a structured approach called the Scientific Method. The chapter presents five steps: Observation, Questioning, Hypothesizing, Testing & Experimentation, and Analysis & Conclusion.",
+        "simple_explanation": "A scientist notices something, asks a clear question, makes a testable guess, tests it with evidence, and then studies the results to decide what they mean.",
+        "steps": [
+          {
+            "step": 1,
+            "name": "Observation",
+            "explanation": "Notice something interesting, unusual or puzzling in the environment."
+          },
+          {
+            "step": 2,
+            "name": "Questioning",
+            "explanation": "Formulate a clear question about why or how something is happening."
+          },
+          {
+            "step": 3,
+            "name": "Hypothesizing",
+            "explanation": "Propose a logical, educated guess or testable explanation for the observed phenomenon."
+          },
+          {
+            "step": 4,
+            "name": "Testing & Experimentation",
+            "explanation": "Conduct experiments, tests or systematically gather evidence to test the hypothesis."
+          },
+          {
+            "step": 5,
+            "name": "Analysis & Conclusion",
+            "explanation": "Evaluate the results and decide whether the evidence supports the hypothesis or whether the guess needs modification."
+          }
+        ],
+        "important_terms": [
+          {
+            "term": "Observation",
+            "meaning": "Noticing something interesting, unusual or puzzling."
+          },
+          {
+            "term": "Hypothesis",
+            "meaning": "A logical, educated guess or testable explanation."
+          },
+          {
+            "term": "Experimentation",
+            "meaning": "Testing an idea through experiments, tests or systematic evidence gathering."
+          },
+          {
+            "term": "Analysis",
+            "meaning": "Evaluating the results of an investigation."
+          },
+          {
+            "term": "Conclusion",
+            "meaning": "A decision about what the evidence shows."
+          }
+        ],
+        "quick_check": [
+          "What comes immediately after observation?",
+          "What is a hypothesis?",
+          "Why is testing important?",
+          "What should a scientist do if evidence does not support the hypothesis?"
+        ]
+      }
+    },
+    {
+      "topic_id": "T4",
+      "title": "Everyday Examples of Scientific Thinking",
+      "source_section": "EVERYDAY EXAMPLES OF SCIENTIFIC THINKING",
+      "learning_objective": "Identify scientific thinking in common daily situations.",
+      "lesson": {
+        "concept_explanation": "Scientific thinking is not limited to laboratories. The chapter illustrates it with kitchen investigations, bicycle troubleshooting and plant growth observations.",
+        "examples": [
+          {
+            "context": "Kitchen",
+            "example": "Investigating why milk boils over or why pressure cooker valves release steam at specific intervals."
+          },
+          {
+            "context": "Bicycle troubleshooting",
+            "example": "Finding why a tire is losing air pressure by immersing the tube in water and locating escaping bubbles."
+          },
+          {
+            "context": "Plant growth",
+            "example": "Observing why potted plants turn towards window sunlight (phototropism)."
+          }
+        ],
+        "key_points": [
+          "Everyday observations can lead to questions.",
+          "Evidence can be gathered to investigate a problem.",
+          "Scientific thinking can help solve practical problems."
+        ],
+        "important_terms": [
+          {
+            "term": "Phototropism",
+            "meaning": "The turning of potted plants towards window sunlight, as used in the chapter example."
+          }
+        ],
+        "quick_check": [
+          "How can water help identify an air leak in a bicycle tube?",
+          "What plant-growth observation is given as an example of scientific thinking?"
+        ]
+      }
+    },
+    {
+      "topic_id": "T5",
+      "title": "Overview of Themes in Grade 6 Science",
+      "source_section": "4. Overview of Themes in Grade 6 Science",
+      "learning_objective": "Recognize the broad science themes previewed in the chapter.",
+      "lesson": {
+        "concept_explanation": "Chapter 1 introduces the direction of Grade 6 Science by previewing themes that will be explored in upcoming chapters.",
+        "themes": [
+          {
+            "theme": "Living World & Nature",
+            "concepts": "Seed germination, plant and animal diversity, adaptations, and transformation cycles such as caterpillars to butterflies."
+          },
+          {
+            "theme": "Food & Nutrition",
+            "concepts": "Mindful eating, essential nutrients, components of a balanced diet, and maintaining bodily health."
+          },
+          {
+            "theme": "Materials & States",
+            "concepts": "Classification of daily materials, separation of mixtures, and physical properties such as thermal measurement and solubility."
+          },
+          {
+            "theme": "Physical World",
+            "concepts": "Properties of magnets, measurement of length and physical distances, types of motion, and physical phenomena."
+          },
+          {
+            "theme": "Beyond Earth",
+            "concepts": "Astronomy fundamentals, the solar system, celestial bodies, and Earth's place in the cosmos."
+          }
+        ],
+        "quick_check": [
+          "Which theme includes seed germination?",
+          "Which theme includes the solar system?",
+          "Which theme includes separation of mixtures?"
+        ]
+      }
+    },
+    {
+      "topic_id": "T6",
+      "title": "Collaboration in Science",
+      "source_section": "5. Collaboration in Science",
+      "learning_objective": "Explain why collaboration is part of scientific work.",
+      "lesson": {
+        "concept_explanation": "Science is rarely done in isolation. It is described in the chapter as a shared human effort.",
+        "simple_explanation": "When you cannot solve a scientific puzzle alone, you can discuss your observations with classmates, teachers and family members and listen to different ideas.",
+        "key_points": [
+          "Science is a shared human effort.",
+          "Scientists and learners can discuss observations with others.",
+          "Alternative hypotheses can provide different ways of thinking.",
+          "Collaboration can make learning science engaging, thorough and enjoyable."
+        ],
+        "quick_check": [
+          "Who can you discuss a scientific puzzle with?",
+          "Why is listening to alternative hypotheses useful?"
+        ]
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q01",
+      "topic_id": "T1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "What is described as the first and most crucial requirement for learning science?",
+      "options": [
+        "Memorising facts",
+        "Curiosity",
+        "Drawing diagrams",
+        "Reading quickly"
+      ],
+      "answer": "Curiosity",
+      "explanation": "The chapter states that curiosity—the desire to ask Why?, How? and What if?—is the first and most crucial requirement for learning science.",
+      "marks": 1
+    },
+    {
+      "id": "Q02",
+      "topic_id": "T1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "According to the chapter, science is best described as:",
+      "options": [
+        "A collection of facts to memorise",
+        "A systematic way of thinking, observing, experimenting and understanding",
+        "Only laboratory experiments",
+        "A list of scientific names"
+      ],
+      "answer": "A systematic way of thinking, observing, experimenting and understanding",
+      "explanation": "The chapter explicitly defines science as a systematic way of thinking, observing, experimenting and understanding the physical and natural world.",
+      "marks": 1
+    },
+    {
+      "id": "Q03",
+      "topic_id": "T1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which set of questions is highlighted as an expression of curiosity?",
+      "options": [
+        "Who?, Where?, When?",
+        "Why?, How?, What if?",
+        "Which?, Whose?, Where?",
+        "Can?, Will?, Did?"
+      ],
+      "answer": "Why?, How?, What if?",
+      "explanation": "The chapter says science thrives on continuous questioning, especially asking Why?, How? and What if?",
+      "marks": 1
+    },
+    {
+      "id": "Q04",
+      "topic_id": "T1",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Why is science not merely a collection of facts to memorize?",
+      "answer": "Because science is a systematic way of thinking, observing, experimenting and understanding the physical and natural world.",
+      "expected_key_points": [
+        "systematic way of thinking",
+        "observing",
+        "experimenting",
+        "understanding the physical/natural world"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "Q05",
+      "topic_id": "T2",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Why does the chapter compare science to a giant, infinite jigsaw puzzle?",
+      "options": [
+        "Because science uses puzzle pieces",
+        "Because every discovery adds another piece and opens further questions",
+        "Because scientists solve puzzles for fun",
+        "Because science has a fixed final answer"
+      ],
+      "answer": "Because every discovery adds another piece and opens further questions",
+      "explanation": "The comparison shows that scientific knowledge keeps growing and each new piece can lead to more questions.",
+      "marks": 1
+    },
+    {
+      "id": "Q06",
+      "topic_id": "T2",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "What can a new piece of scientific knowledge do?",
+      "options": [
+        "End all scientific questions",
+        "Unlock further questions and new areas of study",
+        "Make experiments unnecessary",
+        "Stop scientific inquiry"
+      ],
+      "answer": "Unlock further questions and new areas of study",
+      "explanation": "The chapter says every new piece of knowledge unlocks further questions and opens new areas of study.",
+      "marks": 1
+    },
+    {
+      "id": "Q07",
+      "topic_id": "T2",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "How can a simple everyday observation contribute to science?",
+      "answer": "A simple observation can lead to a scientific question or inquiry and, through investigation, may contribute to a significant scientific breakthrough.",
+      "expected_key_points": [
+        "everyday observation",
+        "question/inquiry",
+        "investigation",
+        "possible breakthrough"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "Q08",
+      "topic_id": "T2",
+      "type": "subjective",
+      "difficulty": "medium",
+      "question": "Explain in your own words why science can be called an unending jigsaw puzzle.",
+      "answer": "Science is like an unending jigsaw puzzle because each scientific inquiry or discovery adds a new piece to our understanding, but the new knowledge also creates more questions and areas to explore.",
+      "expected_key_points": [
+        "jigsaw analogy",
+        "new discoveries add pieces",
+        "new questions arise",
+        "continued exploration"
+      ],
+      "marks": 3
+    },
+    {
+      "id": "Q09",
+      "topic_id": "T3",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "What is the first step of the Scientific Method given in the chapter?",
+      "options": [
+        "Conclusion",
+        "Observation",
+        "Hypothesizing",
+        "Testing"
+      ],
+      "answer": "Observation",
+      "explanation": "Step 1 is Observation: noticing something interesting, unusual or puzzling.",
+      "marks": 1
+    },
+    {
+      "id": "Q10",
+      "topic_id": "T3",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "What is the second step of the Scientific Method?",
+      "options": [
+        "Questioning",
+        "Analysis",
+        "Testing",
+        "Conclusion"
+      ],
+      "answer": "Questioning",
+      "explanation": "Step 2 is Questioning: formulating a clear question about why or how something is happening.",
+      "marks": 1
+    },
+    {
+      "id": "Q11",
+      "topic_id": "T3",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Which step involves proposing a logical, educated guess or testable explanation?",
+      "options": [
+        "Observation",
+        "Questioning",
+        "Hypothesizing",
+        "Analysis & Conclusion"
+      ],
+      "answer": "Hypothesizing",
+      "explanation": "Step 3 is Hypothesizing.",
+      "marks": 1
+    },
+    {
+      "id": "Q12",
+      "topic_id": "T3",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "What happens during Testing & Experimentation?",
+      "options": [
+        "A scientist notices something",
+        "A scientist writes only a question",
+        "A scientist conducts experiments or systematically gathers evidence",
+        "A scientist ignores the results"
+      ],
+      "answer": "A scientist conducts experiments or systematically gathers evidence",
+      "explanation": "Step 4 involves conducting experiments, tests or systematically gathering evidence to test the hypothesis.",
+      "marks": 1
+    },
+    {
+      "id": "Q13",
+      "topic_id": "T3",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "A logical, educated guess or testable explanation is called a __________.",
+      "answer": "hypothesis",
+      "marks": 1
+    },
+    {
+      "id": "Q14",
+      "topic_id": "T3",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "The final step presented in the Scientific Method is Analysis & __________.",
+      "answer": "Conclusion",
+      "marks": 1
+    },
+    {
+      "id": "Q15",
+      "topic_id": "T3",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "List the five steps of the Scientific Method given in the chapter.",
+      "answer": "Observation; Questioning; Hypothesizing; Testing & Experimentation; Analysis & Conclusion.",
+      "expected_key_points": [
+        "Observation",
+        "Questioning",
+        "Hypothesizing",
+        "Testing & Experimentation",
+        "Analysis & Conclusion"
+      ],
+      "marks": 3
+    },
+    {
+      "id": "Q16",
+      "topic_id": "T3",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What should a scientist do if the evidence does not support the hypothesis?",
+      "answer": "The scientist should evaluate the results and may need to modify the guess or hypothesis.",
+      "expected_key_points": [
+        "evaluate results",
+        "evidence may not support hypothesis",
+        "modify guess/hypothesis"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "Q17",
+      "topic_id": "T3",
+      "type": "subjective",
+      "difficulty": "hard",
+      "question": "A student notices a puzzling event, asks why it happens, suggests a testable explanation, gathers evidence and evaluates the result. Explain how this follows the Scientific Method.",
+      "answer": "The student follows the sequence of Observation, Questioning, Hypothesizing, Testing & Experimentation, and Analysis & Conclusion.",
+      "expected_key_points": [
+        "observation",
+        "question",
+        "hypothesis",
+        "testing/evidence",
+        "analysis/conclusion"
+      ],
+      "marks": 3
+    },
+    {
+      "id": "Q18",
+      "topic_id": "T4",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "How can a bicycle tube be investigated for an air leak according to the chapter?",
+      "options": [
+        "Paint it",
+        "Immerse it in water and look for escaping bubbles",
+        "Put it in sunlight",
+        "Measure its colour"
+      ],
+      "answer": "Immerse it in water and look for escaping bubbles",
+      "explanation": "The chapter gives immersing the tube in water and locating escaping bubbles as an example of scientific thinking.",
+      "marks": 1
+    },
+    {
+      "id": "Q19",
+      "topic_id": "T4",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which plant-growth observation is given as an example of scientific thinking?",
+      "options": [
+        "Plants turn towards window sunlight",
+        "Plants become magnetic",
+        "Plants stop needing water",
+        "Plants change into animals"
+      ],
+      "answer": "Plants turn towards window sunlight",
+      "explanation": "The chapter identifies potted plants turning towards window sunlight as an example and names it phototropism.",
+      "marks": 1
+    },
+    {
+      "id": "Q20",
+      "topic_id": "T4",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Which of these is a kitchen investigation mentioned in the chapter?",
+      "options": [
+        "Why milk boils over",
+        "Why pencils break",
+        "Why books have pages",
+        "Why shoes have laces"
+      ],
+      "answer": "Why milk boils over",
+      "explanation": "The chapter gives investigating why milk boils over as an everyday example of scientific thinking.",
+      "marks": 1
+    },
+    {
+      "id": "Q21",
+      "topic_id": "T4",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What can escaping bubbles tell you when a bicycle tube is immersed in water?",
+      "answer": "They can help locate the place where air is escaping from the tube.",
+      "expected_key_points": [
+        "escaping bubbles",
+        "locate air leak/escaping air"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "Q22",
+      "topic_id": "T5",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which Grade 6 Science theme includes seed germination?",
+      "options": [
+        "Beyond Earth",
+        "Living World & Nature",
+        "Physical World",
+        "Food & Nutrition"
+      ],
+      "answer": "Living World & Nature",
+      "explanation": "Seed germination is listed under Living World & Nature.",
+      "marks": 1
+    },
+    {
+      "id": "Q23",
+      "topic_id": "T5",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which theme includes the solar system and celestial bodies?",
+      "options": [
+        "Materials & States",
+        "Food & Nutrition",
+        "Beyond Earth",
+        "Living World & Nature"
+      ],
+      "answer": "Beyond Earth",
+      "explanation": "Astronomy fundamentals, the solar system and celestial bodies are listed under Beyond Earth.",
+      "marks": 1
+    },
+    {
+      "id": "Q24",
+      "topic_id": "T5",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Which theme includes separation of mixtures and physical properties such as solubility?",
+      "options": [
+        "Materials & States",
+        "Beyond Earth",
+        "Food & Nutrition",
+        "Living World & Nature"
+      ],
+      "answer": "Materials & States",
+      "explanation": "The chapter lists separation of mixtures and properties such as solubility under Materials & States.",
+      "marks": 1
+    },
+    {
+      "id": "Q25",
+      "topic_id": "T5",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "Properties of magnets, measurement of length, types of motion and physical phenomena are included under the __________ World theme.",
+      "answer": "Physical",
+      "marks": 1
+    },
+    {
+      "id": "Q26",
+      "topic_id": "T5",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Name any three themes previewed for Grade 6 Science in this chapter.",
+      "answer": "Any three of: Living World & Nature; Food & Nutrition; Materials & States; Physical World; Beyond Earth.",
+      "expected_key_points": [
+        "any three correct themes"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "Q27",
+      "topic_id": "T6",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "According to the chapter, science is rarely done in:",
+      "options": [
+        "Groups",
+        "Isolation",
+        "Schools",
+        "Nature"
+      ],
+      "answer": "Isolation",
+      "explanation": "The chapter says science is rarely done in isolation and describes it as a shared human effort.",
+      "marks": 1
+    },
+    {
+      "id": "Q28",
+      "topic_id": "T6",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Who can a learner discuss scientific observations with?",
+      "options": [
+        "Only a textbook",
+        "Classmates, teachers and family members",
+        "Only strangers",
+        "Nobody"
+      ],
+      "answer": "Classmates, teachers and family members",
+      "explanation": "The chapter specifically recommends discussing observations with classmates, teachers and family members.",
+      "marks": 1
+    },
+    {
+      "id": "Q29",
+      "topic_id": "T6",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Why is listening to alternative hypotheses useful in science?",
+      "answer": "It allows learners to hear different ideas and perspectives when exploring a scientific puzzle.",
+      "expected_key_points": [
+        "different ideas",
+        "alternative hypotheses",
+        "helps exploration/problem solving"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "Q30",
+      "topic_id": "T6",
+      "type": "subjective",
+      "difficulty": "medium",
+      "question": "Explain how collaboration can make learning science more engaging, thorough and enjoyable.",
+      "answer": "Collaboration allows people to discuss observations, share unique insights and listen to alternative hypotheses. This shared exploration can make science learning more engaging, thorough and enjoyable.",
+      "expected_key_points": [
+        "discuss observations",
+        "share insights",
+        "listen to alternative hypotheses",
+        "shared exploration",
+        "engaging/thorough/enjoyable"
+      ],
+      "marks": 3
+    }
+  ],
+  "answer_key": {
+    "MCQ": {
+      "Q01": "Curiosity",
+      "Q02": "A systematic way of thinking, observing, experimenting and understanding",
+      "Q03": "Why?, How?, What if?",
+      "Q05": "Because every discovery adds another piece and opens further questions",
+      "Q06": "Unlock further questions and new areas of study",
+      "Q09": "Observation",
+      "Q10": "Questioning",
+      "Q11": "Hypothesizing",
+      "Q12": "A scientist conducts experiments or systematically gathers evidence",
+      "Q18": "Immerse it in water and look for escaping bubbles",
+      "Q19": "Plants turn towards window sunlight",
+      "Q20": "Why milk boils over",
+      "Q22": "Living World & Nature",
+      "Q23": "Beyond Earth",
+      "Q24": "Materials & States",
+      "Q27": "Isolation",
+      "Q28": "Classmates, teachers and family members"
+    },
+    "fill_in_the_blank": {
+      "Q13": "hypothesis",
+      "Q14": "Conclusion",
+      "Q25": "Physical"
+    },
+    "short_answer_and_subjective": "Use the expected_key_points and marking rubrics; accept equivalent scientifically correct wording."
+  },
+  "subjective_marking_rubric": {
+    "Q08": {
+      "marks": 3,
+      "criteria": [
+        {
+          "marks": 3,
+          "description": "Explains the jigsaw analogy, says discoveries add pieces to knowledge, and explains that new knowledge creates further questions/areas of study."
+        },
+        {
+          "marks": 2,
+          "description": "Explains the analogy and mentions either continued discovery or further questions, but misses one important element."
+        },
+        {
+          "marks": 1,
+          "description": "Shows partial understanding of the analogy but gives little explanation."
+        },
+        {
+          "marks": 0,
+          "description": "Incorrect, irrelevant or no answer."
+        }
+      ]
+    },
+    "Q17": {
+      "marks": 3,
+      "criteria": [
+        {
+          "marks": 3,
+          "description": "Correctly maps all five stages: observation, question, hypothesis, testing/evidence, and analysis/conclusion."
+        },
+        {
+          "marks": 2,
+          "description": "Correctly maps at least four stages with minor omissions."
+        },
+        {
+          "marks": 1,
+          "description": "Shows partial understanding but identifies only one or two stages correctly."
+        },
+        {
+          "marks": 0,
+          "description": "Incorrect or irrelevant."
+        }
+      ]
+    },
+    "Q30": {
+      "marks": 3,
+      "criteria": [
+        {
+          "marks": 3,
+          "description": "Mentions discussion of observations, sharing insights, listening to alternative hypotheses, and explains the benefit to learning."
+        },
+        {
+          "marks": 2,
+          "description": "Mentions at least two collaboration behaviours and connects them to better learning."
+        },
+        {
+          "marks": 1,
+          "description": "Gives a general statement about working together with little explanation."
+        },
+        {
+          "marks": 0,
+          "description": "Incorrect, irrelevant or no answer."
+        }
+      ]
+    }
+  },
+  "exam_blueprints": [
+    {
+      "exam_id": "PRACTICE_01",
+      "title": "Chapter 1 Practice Quiz",
+      "questions": 10,
+      "suggested_selection": [
+        "Q01",
+        "Q03",
+        "Q05",
+        "Q09",
+        "Q11",
+        "Q13",
+        "Q18",
+        "Q22",
+        "Q27",
+        "Q28"
+      ],
+      "total_marks": 10,
+      "feedback_mode": "Immediate"
+    },
+    {
+      "exam_id": "TEST_01",
+      "title": "Chapter 1 Assessment",
+      "questions": 20,
+      "suggested_selection": [
+        "Q02",
+        "Q04",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q12",
+        "Q13",
+        "Q14",
+        "Q15",
+        "Q16",
+        "Q17",
+        "Q18",
+        "Q20",
+        "Q21",
+        "Q23",
+        "Q24",
+        "Q26",
+        "Q30"
+      ],
+      "total_marks": 40,
+      "feedback_mode": "After submission",
+      "note": "Marks are based on the question records; total may be adjusted by the app if the product owner changes the exam mix."
+    }
+  ],
+  "ai_tutor_system_prompt": "You are Science Buddy, a friendly Class 6 CBSE Science micro-tutor.\nUse only the approved chapter content supplied to the application as the primary source.\nExplain concepts for an 11–12 year old student using short, clear language.\nEncourage thinking instead of helping a student cheat.\nFor homework/exam-style questions, prefer hints and guiding questions before giving a complete answer.\nWhen checking an answer, evaluate scientific concept accuracy more heavily than minor spelling/grammar errors.\nIf the required information is not supported by the approved chapter content, say that you do not have enough information from this chapter to answer confidently.\nDo not invent textbook facts, chapter topics, definitions, experiments or curriculum claims.\nWhen useful, use this response pattern:\n1. Simple explanation\n2. Everyday example\n3. Key point\n4. Quick check question\nKeep responses concise and encouraging.",
+  "subjective_evaluation_prompt": "Evaluate a Class 6 student's Science answer against the supplied question, expected key points and marking criteria.\nFocus on scientific meaning and the key concepts.\nDo not over-penalize minor spelling or grammar errors.\nReturn:\n- score\n- strengths\n- missing_points\n- misconceptions\n- improvement_tip\n- suggested_answer\nDo not award marks for claims unsupported by the approved chapter content.",
+  "database_schema": {
+    "chapters": [
+      "id",
+      "board",
+      "grade",
+      "subject",
+      "textbook",
+      "chapter_number",
+      "title",
+      "description",
+      "source_reference"
+    ],
+    "topics": [
+      "id",
+      "chapter_id",
+      "title",
+      "sequence",
+      "learning_objective"
+    ],
+    "lessons": [
+      "id",
+      "topic_id",
+      "concept_explanation",
+      "simple_explanation",
+      "key_points",
+      "important_terms",
+      "examples",
+      "quick_check"
+    ],
+    "questions": [
+      "id",
+      "chapter_id",
+      "topic_id",
+      "type",
+      "difficulty",
+      "question",
+      "options",
+      "answer",
+      "explanation",
+      "expected_key_points",
+      "marks"
+    ],
+    "exams": [
+      "id",
+      "title",
+      "chapter_id",
+      "exam_type",
+      "total_marks",
+      "feedback_mode"
+    ],
+    "exam_questions": [
+      "id",
+      "exam_id",
+      "question_id",
+      "sequence"
+    ],
+    "student_answers": [
+      "id",
+      "student_id",
+      "exam_id",
+      "question_id",
+      "answer_text",
+      "score",
+      "ai_feedback"
+    ],
+    "student_progress": [
+      "id",
+      "student_id",
+      "chapter_id",
+      "topic_id",
+      "completion_percent",
+      "accuracy",
+      "attempts"
+    ],
+    "ai_recommendations": [
+      "id",
+      "student_id",
+      "chapter_id",
+      "topic_id",
+      "recommendation",
+      "created_at"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Science Buddy",
+  "description": "AI-powered micro-tutor for Indian Class 6 CBSE Science students.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
