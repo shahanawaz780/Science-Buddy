@@ -18,9 +18,12 @@ export interface RecommendationResponse {
  */
 export function buildPerformancePayload(
   progress: UserProgressData,
-  allTopics: Topic[]
+  allTopics: Topic[],
+  chapterId?: string
 ): StudentPerformancePayload {
-  // 1. Calculate topic-level scores and accuracy
+  const chapterTopicIds = new Set(allTopics.map(t => t.id));
+
+  // 1. Calculate topic-level scores and accuracy for the requested chapter topics
   const topicScores = allTopics.map(topic => {
     const tp = progress.topicProgress[topic.id];
     let attemptsCount = 0;
@@ -30,6 +33,8 @@ export function buildPerformancePayload(
     let totalQuestionsCorrect = 0;
 
     progress.quizHistory.forEach(quiz => {
+      // Filter quiz to this chapter if tagged or if matching topics
+      if (chapterId && quiz.chapterId && quiz.chapterId !== chapterId) return;
       const perf = quiz.topicPerformance?.find(p => p.topicId === topic.id);
       if (perf && perf.total > 0) {
         attemptsCount++;
@@ -65,8 +70,15 @@ export function buildPerformancePayload(
     };
   });
 
-  // 2. Separate quiz and test scores
-  const quizScores = progress.quizHistory
+  // Filter quizzes to the current chapter
+  const chapterFilteredHistory = progress.quizHistory.filter(q => {
+    if (chapterId && q.chapterId) return q.chapterId === chapterId;
+    if (q.topicPerformance && q.topicPerformance.some(tp => chapterTopicIds.has(tp.topicId))) return true;
+    return !chapterId;
+  });
+
+  // 2. Separate quiz and test scores for the current chapter
+  const quizScores = chapterFilteredHistory
     .filter(q => q.quizType === 'practice')
     .slice(-5)
     .map(q => ({
@@ -77,7 +89,7 @@ export function buildPerformancePayload(
       timestamp: q.timestamp
     }));
 
-  const testScores = progress.quizHistory
+  const testScores = chapterFilteredHistory
     .filter(q => q.quizType === 'chapter_test')
     .slice(-5)
     .map(t => ({
@@ -93,7 +105,7 @@ export function buildPerformancePayload(
     .filter(topic => !!progress.topicProgress[topic.id]?.completed)
     .map(t => t.title);
 
-  // 4. Extract incorrect questions from recent history
+  // 4. Extract incorrect questions from recent chapter history
   const incorrectQuestions: Array<{
     question: string;
     topicTitle: string;
@@ -101,14 +113,14 @@ export function buildPerformancePayload(
     correctAnswer?: string;
   }> = [];
 
-  const recentQuizzes = progress.quizHistory.slice(-3);
+  const recentQuizzes = chapterFilteredHistory.slice(-3);
   for (const quiz of recentQuizzes) {
     if (quiz.userAnswers && Array.isArray(quiz.userAnswers)) {
       for (const ua of quiz.userAnswers) {
         if (!ua.isCorrect || ua.score < ua.maxScore) {
           incorrectQuestions.push({
             question: ua.question,
-            topicTitle: ua.topic || 'Chapter 1',
+            topicTitle: ua.topic || (allTopics[0]?.title || 'Topic'),
             studentAnswer: ua.student_answer,
             correctAnswer: ua.correct_answer
           });
@@ -119,9 +131,9 @@ export function buildPerformancePayload(
   }
 
   // 5. Recent activity summary
-  let recentActivity = 'Reviewed Chapter 1 lessons.';
-  if (progress.quizHistory.length > 0) {
-    const latest = progress.quizHistory[progress.quizHistory.length - 1];
+  let recentActivity = `Reviewed ${allTopics[0]?.title || 'curriculum'} lessons.`;
+  if (chapterFilteredHistory.length > 0) {
+    const latest = chapterFilteredHistory[chapterFilteredHistory.length - 1];
     recentActivity = `Completed "${latest.quizTitle}" scoring ${latest.score}/${latest.totalMarks} (${latest.percentage}%).`;
   }
 
@@ -139,7 +151,9 @@ export function buildPerformancePayload(
  * Calls server-side Gemini endpoint for personalized AI recommendations.
  */
 export async function fetchAIRecommendations(
-  payload: StudentPerformancePayload
+  payload: StudentPerformancePayload,
+  chapterId?: string,
+  chapterTitle?: string
 ): Promise<RecommendationResponse> {
   try {
     const res = await fetch('/api/gemini/recommendations', {
@@ -147,29 +161,34 @@ export async function fetchAIRecommendations(
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        ...payload,
+        chapter_id: chapterId,
+        chapter_title: chapterTitle
+      })
     });
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       return {
         success: false,
-        data: getFallbackRecommendation(payload),
+        data: getFallbackRecommendation(payload, chapterTitle),
         error: err.error || 'Failed to generate recommendations.'
       };
     }
 
     const data: AIRecommendationResult = await res.json();
+    const fallback = getFallbackRecommendation(payload, chapterTitle);
 
     return {
       success: true,
       data: {
-        summary: data.summary || 'You are making good progress in Chapter 1.',
-        strong_area: data.strong_area || 'Collaboration in Science',
-        weak_area: data.weak_area || 'How Do Scientists Work?',
-        recommended_topic: data.recommended_topic || 'How Do Scientists Work?',
-        recommended_action: data.recommended_action || 'Review the five steps and attempt the practice quiz.',
-        reason: data.reason || 'Focusing on this topic will help you achieve full marks in Chapter 1.'
+        summary: data.summary || fallback.summary,
+        strong_area: data.strong_area || fallback.strong_area,
+        weak_area: data.weak_area || fallback.weak_area,
+        recommended_topic: data.recommended_topic || fallback.recommended_topic,
+        recommended_action: data.recommended_action || fallback.recommended_action,
+        reason: data.reason || fallback.reason
       },
       isFallback: !!(data as any).is_fallback
     };
@@ -177,24 +196,25 @@ export async function fetchAIRecommendations(
     console.error('Error in fetchAIRecommendations:', error);
     return {
       success: true, // provide smooth fallback for UI
-      data: getFallbackRecommendation(payload),
+      data: getFallbackRecommendation(payload, chapterTitle),
       isFallback: true
     };
   }
 }
 
-function getFallbackRecommendation(payload: StudentPerformancePayload): AIRecommendationResult {
+function getFallbackRecommendation(payload: StudentPerformancePayload, chapterTitle?: string): AIRecommendationResult {
   const topics = payload.topicScores || [];
   const sorted = [...topics].sort((a, b) => (a.accuracy ?? 50) - (b.accuracy ?? 50));
-  const weakest = sorted[0] || { topicTitle: 'How Do Scientists Work?', accuracy: 50 };
-  const strongest = sorted[sorted.length - 1] || { topicTitle: 'Welcome to the World of Science', accuracy: 85 };
+  const weakest = sorted[0] || { topicTitle: 'Science Concepts', accuracy: 50 };
+  const strongest = sorted[sorted.length - 1] || { topicTitle: 'Fundamental Ideas', accuracy: 85 };
+  const chName = chapterTitle || 'this chapter';
 
   return {
-    summary: 'You are doing well overall in Chapter 1.',
-    strong_area: strongest.topicTitle || 'Collaboration in Science',
-    weak_area: weakest.topicTitle || 'How Do Scientists Work?',
-    recommended_topic: weakest.topicTitle || 'How Do Scientists Work?',
-    recommended_action: `Review "${weakest.topicTitle || 'How Do Scientists Work?'}" and attempt the practice quiz.`,
+    summary: `You are making steady progress in ${chName}.`,
+    strong_area: strongest.topicTitle || 'Core Concepts',
+    weak_area: weakest.topicTitle || 'Practice Concepts',
+    recommended_topic: weakest.topicTitle || 'Practice Concepts',
+    recommended_action: `Review "${weakest.topicTitle || 'Practice Concepts'}" and attempt a practice quiz.`,
     reason: `Your current accuracy in ${weakest.topicTitle} is ${weakest.accuracy}%. Targeted practice here will give you the biggest score boost.`
   };
 }

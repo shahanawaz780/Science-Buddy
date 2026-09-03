@@ -1,0 +1,505 @@
+{
+  "metadata": {
+    "product": "Science Buddy",
+    "phase": "MVP Phase 2",
+    "board": "CBSE",
+    "grade": 6,
+    "subject": "Science",
+    "textbook": "Curiosity",
+    "chapter_number": 2,
+    "chapter_title": "Diversity in the Living World",
+    "source_file": "NCERT_Class_6_Science_Chapter_2_Curiosity.pdf",
+    "source_basis": "NCERT Class 6 Curiosity Textbook Chapter 2",
+    "note": "Complete content pack covering plant structures, animal diversity, habitats, adaptations, and characteristics of living beings."
+  },
+  "learning_objectives": [
+    "Understand the vast diversity of plants and animals in various environments.",
+    "Identify key parts of plants (roots, stems, leaves, flowers) and their vital functions.",
+    "Differentiate between taproots and fibrous roots, and reticulate and parallel leaf venation.",
+    "Classify habitats into terrestrial (desert, mountain, grassland) and aquatic (ponds, lakes, oceans).",
+    "Explain how specific adaptations help organisms survive in extreme habitats.",
+    "Recognize the essential characteristics of living organisms (growth, respiration, response to stimuli, reproduction, excretion)."
+  ],
+  "topics": [
+    {
+      "topic_id": "C2_T1",
+      "title": "Diversity of Plants & Their Parts",
+      "source_section": "2.1 Plants: Forms and Structures",
+      "learning_objective": "Identify the major parts of flowering plants and understand the functions of roots, stems, and leaves.",
+      "lesson": {
+        "concept_explanation": "Plants exhibit immense variety in size, shape, and structure—ranging from tiny herbs and medium-sized shrubs to towering trees. Despite differences, most flowering plants have roots that anchor them in the soil and absorb water and minerals, stems that transport fluids, leaves that synthesize food, and flowers that aid reproduction.",
+        "simple_explanation": "Just like human bodies have organs for different jobs, plants have roots to drink water, stems to carry supplies, and leaves as green kitchens making food from sunlight!",
+        "key_points": [
+          "Plants are broadly categorized based on height and stem nature into Herbs (tender green stems), Shrubs (hard, branching stems near ground), and Trees (thick, woody trunks).",
+          "The Root System anchors the plant and absorbs water and dissolved minerals from the soil.",
+          "Taproots have a prominent main root with smaller lateral branches (e.g., Mustard, Gram), while Fibrous roots form a bunch of thin roots from the stem base (e.g., Grass, Wheat, Maize).",
+          "Leaves perform photosynthesis (food making) and transpiration (releasing excess water vapor through stomata)."
+        ],
+        "important_terms": [
+          {
+            "term": "Taproot",
+            "meaning": "A root system featuring one prominent, thick main root growing vertically down with smaller lateral rootlets."
+          },
+          {
+            "term": "Fibrous Root",
+            "meaning": "A root system consisting of a cluster of nearly equal-sized, slender roots originating from the stem base."
+          },
+          {
+            "term": "Transpiration",
+            "meaning": "The process through which plants release excess water in the form of water vapor into the air through microscopic stomatal pores."
+          },
+          {
+            "term": "Venation",
+            "meaning": "The pattern or arrangement of veins in the lamina (blade) of a leaf."
+          }
+        ],
+        "real_life_examples": [
+          "Pulling a grass plant from wet garden soil reveals a spray of fibrous roots holding soil particles.",
+          "Examining a peepal leaf shows a web-like reticulate venation, while banana and sugarcane leaves show parallel venation lines.",
+          "Tying a transparent polythene bag over a healthy leafy branch on a sunny day captures tiny water droplets formed by transpiration."
+        ],
+        "quick_check": [
+          "What is the key structural difference between a taproot and a fibrous root?",
+          "How is the type of root system correlated with the venation of a plant's leaves?"
+        ]
+      }
+    },
+    {
+      "topic_id": "C2_T2",
+      "title": "Leaf Venation & Plant Functions",
+      "source_section": "2.2 Leaves: Venation, Photosynthesis and Transpiration",
+      "learning_objective": "Differentiate between reticulate and parallel venation and relate leaf structure to plant functions.",
+      "lesson": {
+        "concept_explanation": "The leaf is the primary food-producing organ in green plants. The pattern of veins across the leaf blade is called venation. There is a fascinating scientific correlation: plants with reticulate venation typically have taproots, while plants with parallel venation possess fibrous roots.",
+        "simple_explanation": "Look closely at leaves: if the veins look like a delicate fishnet or web, it's reticulate venation. If they run side-by-side like railway tracks, it's parallel venation!",
+        "key_points": [
+          "Reticulate Venation: Veins branch out to form a network across the lamina (e.g., Peepal, Rose, Mango, Hibiscus).",
+          "Parallel Venation: Veins run straight and parallel to one another from base to tip (e.g., Grass, Wheat, Banana, Bamboo).",
+          "Leaves contain the green pigment Chlorophyll, which traps solar energy to convert carbon dioxide and water into glucose during photosynthesis.",
+          "Stomata are microscopic pores on the leaf surface that facilitate gas exchange (CO2 intake and O2 release) and transpiration."
+        ],
+        "important_terms": [
+          {
+            "term": "Reticulate Venation",
+            "meaning": "A net-like pattern formed by branching veins and veinlets across the leaf lamina."
+          },
+          {
+            "term": "Parallel Venation",
+            "meaning": "An arrangement where leaf veins run parallel to each other along the length of the leaf."
+          },
+          {
+            "term": "Stomata",
+            "meaning": "Tiny microscopic openings present primarily on the underside of leaves for gas exchange and water evaporation."
+          }
+        ],
+        "real_life_examples": [
+          "Observing an old skeletonized fallen peepal leaf clearly reveals the intricate reticulate lace-like venation.",
+          "Tearing a blade of grass or a banana leaf tears cleanly in straight strips because of parallel veins."
+        ],
+        "quick_check": [
+          "If a plant has leaves with parallel venation, what kind of roots will it have?",
+          "What are the two major roles of stomata in leaves?"
+        ]
+      }
+    },
+    {
+      "topic_id": "C2_T3",
+      "title": "Diversity of Animals & Movement",
+      "source_section": "2.3 Animal Kingdom Diversity & Locomotion",
+      "learning_objective": "Explore the diverse body structures and modes of movement in animals across different habitats.",
+      "lesson": {
+        "concept_explanation": "Animals show remarkable diversity in their habitats, diets, and body structures. Their body shapes and appendages are specialized for their specific modes of movement: birds have hollow bones and streamlined bodies for flying, fish have fins and streamlined shapes for swimming, while earthworms use circular and longitudinal muscles with bristles (setae) to move through soil.",
+        "simple_explanation": "From slithering snakes and swimming fish to soaring eagles and burrowing earthworms, each animal's body is custom-built by nature for moving in its surroundings.",
+        "key_points": [
+          "Streamlined Body: Both fish and birds have bodies tapered at both ends, which drastically reduces fluid resistance (drag) in water and air.",
+          "Earthworms have soft, segmented bodies without bones; they move by alternate contraction and expansion of body muscles aided by tiny bristles called setae.",
+          "Snails move using a muscular foot that secretes a slimy mucus trail for smooth gliding.",
+          "Birds possess pneumatic (hollow, air-filled) bones to minimize weight, strong breast muscles, and forelimbs modified into wings for flight."
+        ],
+        "important_terms": [
+          {
+            "term": "Streamlined Shape",
+            "meaning": "A spindle body shape that is narrow at both ends and broader in the middle, reducing resistance when moving through fluids."
+          },
+          {
+            "term": "Locomotion",
+            "meaning": "The ability of an organism to move its entire body from one place to another."
+          },
+          {
+            "term": "Pneumatic Bones",
+            "meaning": "Hollow, lightweight bones containing air cavities found in birds."
+          }
+        ],
+        "real_life_examples": [
+          "Boats and airplanes are engineered with streamlined shapes directly inspired by the natural shapes of fish and birds.",
+          "Watching an earthworm in a garden shows rhythmic waves of swelling and thinning as it crawls through moist earth."
+        ],
+        "quick_check": [
+          "How does a streamlined body shape assist a fish in swimming?",
+          "How do hollow bones help birds fly efficiently?"
+        ]
+      }
+    },
+    {
+      "topic_id": "C2_T4",
+      "title": "Habitats & Ecological Adaptations",
+      "source_section": "2.4 Habitats: Terrestrial and Aquatic Ecosystems",
+      "learning_objective": "Classify habitats and explain how structural adaptations enable organisms to thrive in their surroundings.",
+      "lesson": {
+        "concept_explanation": "A habitat is the natural living environment where a plant or animal finds food, water, shelter, and suitable conditions for breeding. Terrestrial habitats include deserts, mountains, and forests; aquatic habitats include freshwater ponds and oceans. Organisms develop specific physiological and structural adaptations to endure extreme conditions.",
+        "simple_explanation": "A habitat is a living being's natural home address! Adaptation is the special gear and body features it has to live comfortably there.",
+        "key_points": [
+          "Desert Adaptations: Camels store fat in humps, have long eyelashes to block sand, broad padded feet to walk on soft sand, and excrete highly concentrated urine. Desert plants like Cactus have leaves modified into spines (reducing water loss) and fleshy green stems that perform photosynthesis and store water.",
+          "Mountain Adaptations: Mountain trees are cone-shaped with sloping needle-like leaves allowing snow to slide off. Snow leopards and yaks have thick fur and heavy layers of fat to conserve body warmth.",
+          "Aquatic Adaptations: Fish have gills to extract dissolved oxygen from water, slippery scales to protect skin, and flat fins and tails for balance and steering.",
+          "Submerged plants (e.g., Hydrilla) have narrow, ribbon-like flexible leaves that bend with water currents without tearing."
+        ],
+        "important_terms": [
+          {
+            "term": "Habitat",
+            "meaning": "The specific natural physical and biological environment in which an organism lives and thrives."
+          },
+          {
+            "term": "Adaptation",
+            "meaning": "Special features, body structures, or behaviors that enable a plant or animal to survive in its particular habitat."
+          },
+          {
+            "term": "Gills",
+            "meaning": "Special respiratory organs in aquatic animals that absorb oxygen dissolved in water."
+          }
+        ],
+        "real_life_examples": [
+          "Cactus plants have fleshy green stems that store moisture and sharp thorns that deter grazing animals and prevent evaporation.",
+          "Pine trees in Himalayan hill stations have conical canopies so heavy winter snowfall slides off without breaking branches."
+        ],
+        "quick_check": [
+          "Name two adaptations of a camel that enable it to survive in the desert.",
+          "Why are the leaves of a cactus reduced to sharp spines?"
+        ]
+      }
+    },
+    {
+      "topic_id": "C2_T5",
+      "title": "Characteristics of Living Organisms",
+      "source_section": "2.5 What Makes Something 'Living'?",
+      "learning_objective": "Identify the fundamental universal characteristics that distinguish living beings from non-living matter.",
+      "lesson": {
+        "concept_explanation": "All living organisms, regardless of how diverse they appear, share fundamental life processes: they require food/nutrition, grow over time, respire to release energy, respond to environmental stimuli, eliminate waste products (excretion), reproduce offspring of their own kind, and undergo a life cycle that ends in death.",
+        "simple_explanation": "Whether it's an oak tree, a blue whale, or a tiny ant—all living things eat, breathe, grow, feel changes around them, produce babies, and produce waste.",
+        "key_points": [
+          "Nutrition: Living organisms need food and water for energy, growth, and repair.",
+          "Respiration: Inhaling oxygen to break down digested food and release usable energy inside cells.",
+          "Growth: Irreversible increase in size and complexity from youth to maturity.",
+          "Response to Stimuli: Reacting to external changes (e.g., closing eyes against bright glare, touch-me-not plant folding leaves when touched).",
+          "Excretion: Elimination of toxic metabolic wastes from the body.",
+          "Reproduction: The biological process by which organisms produce new individuals of their own species."
+        ],
+        "important_terms": [
+          {
+            "term": "Respiration",
+            "meaning": "The cellular chemical process of breaking down food with oxygen to release energy for life activities."
+          },
+          {
+            "term": "Stimulus",
+            "meaning": "Any change in an organism's immediate surroundings that provokes a behavioral or physical response."
+          },
+          {
+            "term": "Excretion",
+            "meaning": "The biological process of removing waste materials and toxins generated during body functions."
+          }
+        ],
+        "real_life_examples": [
+          "Touching the leaves of the Mimosa pudica (Touch-me-not / Chhui-mui) plant causes them to immediately fold inward in response to mechanical touch.",
+          "A tiny mustard seed sprouts into a seedling and grows into a tall flowering plant, showing biological growth."
+        ],
+        "quick_check": [
+          "What is the biological difference between breathing and respiration?",
+          "Give an example of a plant responding to an environmental stimulus."
+        ]
+      }
+    },
+    {
+      "topic_id": "C2_T6",
+      "title": "Biodiversity Conservation & Harmony",
+      "source_section": "2.6 Living in Harmony with Nature",
+      "learning_objective": "Recognize the importance of biodiversity and understand the human responsibility to protect species and habitats.",
+      "lesson": {
+        "concept_explanation": "Every living species in an ecosystem plays a unique and essential role in the web of life. Plants produce oxygen and food; herbivores regulate plant growth; predators maintain population balance; decomposers recycle soil nutrients. Human activities such as deforestation and pollution disrupt this delicate harmony, making biodiversity conservation vital for our collective future.",
+        "simple_explanation": "Nature is a giant team where every tree, bird, insect, and fungus has a job. When we protect trees and animals, we keep our planet healthy and habitable for everyone!",
+        "key_points": [
+          "Biodiversity refers to the rich variety of all life forms on Earth—plants, animals, microorganisms, and the ecosystems they form.",
+          "Interdependence: Living things depend on one another for pollination, seed dispersal, food chains, and nutrient recycling.",
+          "Threats to biodiversity include habitat destruction, excessive plastic waste, water pollution, and cutting forests.",
+          "Conservation practices: Planting native saplings, avoiding single-use plastics, protecting wildlife sanctuaries, and preserving wetlands."
+        ],
+        "important_terms": [
+          {
+            "term": "Biodiversity",
+            "meaning": "The richness and variety of plant and animal life in a particular habitat or in the entire world."
+          },
+          {
+            "term": "Ecosystem",
+            "meaning": "A biological community of interacting organisms and their physical, non-living environment."
+          },
+          {
+            "term": "Conservation",
+            "meaning": "The careful protection and sustainable management of natural resources and wildlife."
+          }
+        ],
+        "real_life_examples": [
+          "Honeybees visiting mustard flowers to gather nectar simultaneously pollinate the flowers, allowing seeds and mustard oil to develop.",
+          "Earthworms in agricultural soil aerate the earth and convert organic kitchen scraps into nutrient-rich vermicompost."
+        ],
+        "quick_check": [
+          "What is biodiversity and why is it important for our planet?",
+          "Name two everyday actions students can take to help conserve local plant and animal life."
+        ]
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "C2_Q01",
+      "topic_id": "C2_T1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which type of root system features a single prominent main root with smaller side branches?",
+      "options": ["Fibrous root system", "Taproot system", "Aerial root system", "Stilt root system"],
+      "answer": "Taproot system",
+      "explanation": "A taproot system has one prominent, vertical main root (primary root) with smaller lateral roots growing out, as seen in mustard and carrot.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q02",
+      "topic_id": "C2_T2",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "A plant has leaves with parallel venation. What kind of root system will it most likely possess?",
+      "options": ["Taproot system", "Fibrous root system", "Tuberous root system", "Prop root system"],
+      "answer": "Fibrous root system",
+      "explanation": "There is a direct correlation in botany: plants with parallel leaf venation (like wheat, maize, grass) have fibrous root systems.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q03",
+      "topic_id": "C2_T3",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Why do birds have hollow (pneumatic) bones?",
+      "options": ["To swim faster", "To make their bodies lightweight for flight", "To store food reserves", "To stay warm in winter"],
+      "answer": "To make their bodies lightweight for flight",
+      "explanation": "Pneumatic hollow bones reduce overall body mass without sacrificing strength, making flying energy-efficient.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q04",
+      "topic_id": "C2_T4",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which organ allows a fish to absorb oxygen dissolved in water?",
+      "options": ["Lungs", "Skin", "Gills", "Fins"],
+      "answer": "Gills",
+      "explanation": "Gills are rich in blood capillaries that absorb dissolved oxygen directly from water passing over them.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q05",
+      "topic_id": "C2_T4",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "In desert cactus plants, leaves are modified into sharp spines primarily to:",
+      "options": ["Perform photosynthesis", "Reduce water loss by transpiration", "Absorb atmospheric dew", "Support the climbing stem"],
+      "answer": "Reduce water loss by transpiration",
+      "explanation": "Spines drastically minimize the leaf surface area exposed to scorching dry heat, preventing moisture loss.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q06",
+      "topic_id": "C2_T5",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The response of Mimosa pudica (Touch-me-not plant) leaves when gently touched is an example of:",
+      "options": ["Excretion", "Response to stimuli", "Photosynthesis", "Transpiration"],
+      "answer": "Response to stimuli",
+      "explanation": "Living organisms respond to changes in their surroundings; the mechanical touch acts as a stimulus causing the leaflets to fold.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q07",
+      "topic_id": "C2_T1",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "The process by which excess water is released as water vapor from the leaves into the air is called ________.",
+      "answer": "transpiration",
+      "explanation": "Transpiration is the evaporative loss of water through the stomata of plant leaves.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q08",
+      "topic_id": "C2_T4",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "The body shape that is narrow at both ends and broad in the middle, reducing fluid resistance, is termed ________.",
+      "answer": "streamlined",
+      "explanation": "A streamlined body allows fish and birds to move effortlessly through water and air.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q09",
+      "topic_id": "C2_T5",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "question": "The cellular process of breaking down food in the presence of oxygen to liberate energy is called ________.",
+      "answer": "respiration",
+      "explanation": "Respiration produces energy from nutrients, which powers all metabolic life functions.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q10",
+      "topic_id": "C2_T6",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "The rich variety of plant and animal species inhabiting an area is referred to as ________.",
+      "answer": "biodiversity",
+      "explanation": "Biodiversity represents biological diversity across species, ecosystems, and genetic traits.",
+      "marks": 1
+    },
+    {
+      "id": "C2_Q11",
+      "topic_id": "C2_T1",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "State two major functions performed by the root system of a plant.",
+      "answer": "1. Anchoring the plant firmly in the soil. 2. Absorbing water and dissolved mineral nutrients from the soil.",
+      "expected_key_points": [
+        "Anchoring plant firmly in the soil",
+        "Absorbing water and minerals",
+        "Transporting moisture towards the stem"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "C2_Q12",
+      "topic_id": "C2_T4",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "List two adaptations of a camel that enable it to live in hot, dry deserts.",
+      "answer": "1. Long legs and broad padded feet to walk on hot sand without sinking. 2. Ability to excrete very concentrated urine and little sweat to conserve precious body water.",
+      "expected_key_points": [
+        "Broad padded feet for walking on sand",
+        "Water conservation mechanisms (scant urine, no sweat)",
+        "Hump storing fat for metabolic energy"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "C2_Q13",
+      "topic_id": "C2_T5",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Explain with an example what is meant by 'Response to Stimuli' in living organisms.",
+      "answer": "A stimulus is any change in the environment that evokes a reaction from an organism. For instance, stepping on a sharp thorn makes us pull our foot back immediately, and touching a Mimosa pudica plant makes its leaves fold.",
+      "expected_key_points": [
+        "Definition of stimulus as an environmental change",
+        "Reaction or response by the organism",
+        "Valid plant or animal example (e.g. eye blinking, touch-me-not plant)"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "C2_Q14",
+      "topic_id": "C2_T4",
+      "type": "subjective",
+      "difficulty": "hard",
+      "question": "How are mountain trees like pines and deodars adapted to withstand heavy snow and freezing winter winds?",
+      "answer": "Mountain trees feature conical, cone-shaped canopies with sloping branches and slender, needle-like leaves. This conical architecture ensures that heavy snow and rainwater slide off smoothly rather than accumulating on branches and breaking them. The thick waxy coating on needle leaves also minimizes water loss from dry winter winds.",
+      "expected_key_points": [
+        "Conical or cone-shaped architecture with sloping branches",
+        "Slender needle-like leaves",
+        "Facilitates smooth sliding off of snow and rainwater",
+        "Waxy cuticle prevents damage and moisture loss"
+      ],
+      "marks": 3
+    },
+    {
+      "id": "C2_Q15",
+      "topic_id": "C2_T6",
+      "type": "subjective",
+      "difficulty": "hard",
+      "question": "Why is interdependence among living organisms crucial in an ecosystem? Provide one specific example involving plants and animals.",
+      "answer": "Interdependence is vital because no living species can survive in complete isolation. Organisms depend on one another for nutrition, oxygen, pollination, seed dispersal, and waste decomposition. For example, flowering plants provide nectar and pollen as food for honeybees and butterflies; in return, these insects transfer pollen grains between flowers, enabling fertilization and the production of fruits and seeds that feed humans and other animals.",
+      "expected_key_points": [
+        "No organism survives in isolation / interconnected food and life webs",
+        "Exchange of oxygen and carbon dioxide or nutrients",
+        "Specific plant-animal mutualism example (e.g., pollination by bees, seed dispersal by birds)"
+      ],
+      "marks": 3
+    }
+  ],
+  "subjective_marking_rubric": {
+    "C2_Q11": {
+      "marks": 2,
+      "criteria": [
+        { "marks": 1, "description": "States anchorage in soil clearly." },
+        { "marks": 1, "description": "States absorption of water and minerals." }
+      ]
+    },
+    "C2_Q12": {
+      "marks": 2,
+      "criteria": [
+        { "marks": 1, "description": "Mentions padded feet or long legs for walking on desert sand." },
+        { "marks": 1, "description": "Mentions water conservation or hump fat storage." }
+      ]
+    },
+    "C2_Q13": {
+      "marks": 2,
+      "criteria": [
+        { "marks": 1, "description": "Defines stimulus as an external or environmental change." },
+        { "marks": 1, "description": "Provides an accurate real-world plant or animal example." }
+      ]
+    },
+    "C2_Q14": {
+      "marks": 3,
+      "criteria": [
+        { "marks": 1, "description": "Identifies conical/sloping tree shape." },
+        { "marks": 1, "description": "Identifies needle-like leaves." },
+        { "marks": 1, "description": "Explains how snow slides off without damaging branches." }
+      ]
+    },
+    "C2_Q15": {
+      "marks": 3,
+      "criteria": [
+        { "marks": 1, "description": "Explains the concept of ecological interdependence and mutual balance." },
+        { "marks": 1, "description": "Describes plant contribution (food/nectar/oxygen)." },
+        { "marks": 1, "description": "Describes animal contribution (pollination/seed dispersal)." }
+      ]
+    }
+  },
+  "exam_blueprints": [
+    {
+      "exam_id": "CH2_PRACTICE_QUIZ",
+      "title": "Chapter 2 Practice Quiz",
+      "questions": 5,
+      "suggested_selection": ["C2_Q01", "C2_Q02", "C2_Q03", "C2_Q07", "C2_Q08"],
+      "total_marks": 5,
+      "feedback_mode": "Immediate",
+      "note": "Quick 5-question interactive practice check with instant answers and explanations."
+    },
+    {
+      "exam_id": "CH2_CHAPTER_TEST",
+      "title": "Chapter 2 Summative Assessment",
+      "questions": 15,
+      "suggested_selection": [
+        "C2_Q01", "C2_Q02", "C2_Q03", "C2_Q04", "C2_Q05", "C2_Q06",
+        "C2_Q07", "C2_Q08", "C2_Q09", "C2_Q10",
+        "C2_Q11", "C2_Q12", "C2_Q13",
+        "C2_Q14", "C2_Q15"
+      ],
+      "total_marks": 20,
+      "feedback_mode": "After submission",
+      "note": "Comprehensive 15-question Chapter 2 exam testing plant forms, animal movement, adaptations, and living characteristics."
+    }
+  ],
+  "ai_tutor_system_prompt": "You are 'Science Buddy', a friendly, encouraging AI tutor specialized in NCERT Class 6 CBSE Science Chapter 2: 'Diversity in the Living World'. Explain plant structures, venation, animal adaptations, and habitats with vivid everyday nature examples suitable for 11-12 year old Indian students.",
+  "subjective_evaluation_prompt": "Evaluate Class 6 CBSE student answers for Chapter 2 'Diversity in the Living World' based on scientific accuracy, correct botanical/zoological terminology (e.g. taproot, reticulate venation, streamlined body, stimulus), and logical explanations."
+}

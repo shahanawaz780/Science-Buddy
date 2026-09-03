@@ -1,6 +1,7 @@
 export type NavigationTab = 
   | 'landing'
   | 'home' 
+  | 'chapters'
   | 'learn' 
   | 'lesson' 
   | 'tutor' 
@@ -61,6 +62,20 @@ export interface ContentPackTheme {
   concepts: string;
 }
 
+export interface LessonDiagramLabel {
+  name: string;
+  description: string;
+}
+
+export interface LessonDiagram {
+  id: string;
+  title: string;
+  caption: string;
+  alt: string;
+  svgKey?: string;
+  labels?: LessonDiagramLabel[];
+}
+
 export interface ContentPackLesson {
   concept_explanation: string;
   simple_explanation?: string;
@@ -71,6 +86,10 @@ export interface ContentPackLesson {
   examples?: ContentPackExample[];
   themes?: ContentPackTheme[];
   quick_check?: string[];
+  diagrams?: LessonDiagram[];
+  diagram?: LessonDiagram;
+  sections?: any[];
+  knowledge_check?: any[];
 }
 
 export interface ContentPackTopic {
@@ -121,12 +140,12 @@ export interface ChapterContentPack {
   learning_objectives: string[];
   topics: ContentPackTopic[];
   questions: ContentPackQuestion[];
-  answer_key: {
+  answer_key?: {
     MCQ: Record<string, string>;
     fill_in_the_blank: Record<string, string>;
     short_answer_and_subjective: string;
   };
-  subjective_marking_rubric: Record<string, ContentPackSubjectiveRubricItem>;
+  subjective_marking_rubric?: Record<string, ContentPackSubjectiveRubricItem>;
   exam_blueprints: ContentPackExamBlueprint[];
   ai_tutor_system_prompt: string;
   subjective_evaluation_prompt: string;
@@ -144,6 +163,7 @@ export interface ImportantTerm {
 
 export interface Topic {
   id: string;
+  chapterId?: string;
   order: number;
   title: string;
   sourceSection: string;
@@ -154,17 +174,28 @@ export interface Topic {
   category: string;
 }
 
+export type ChapterStatus = 'available' | 'in_progress' | 'completed' | 'coming_soon';
+
 export interface Chapter {
-  id: string;
+  id: string;                    // e.g. 'chapter-1' or 'ch1'
+  chapter_id?: string;           // alias matching required schema
   number: number;
+  chapter_number?: number;       // alias matching required schema
   title: string;
+  chapter_title?: string;        // alias matching required schema
   subject: string;
   grade: number;
   board: string;
   textbook: string;
   description: string;
-  sourceFile: string;
-  sourceBasis: string;
+  display_order?: number;        // display ordering
+  displayOrder?: number;
+  status?: ChapterStatus;        // 'available' | 'in_progress' | 'completed' | 'coming_soon'
+  isAvailable?: boolean;         // interactive lessons & quiz content loaded
+  content_availability?: string; // e.g. 'Full Interactive Curriculum' | 'Coming Soon'
+  hasContent?: boolean;
+  sourceFile?: string;
+  sourceBasis?: string;
   learningObjectives: string[];
   totalTopics: number;
   topics: Topic[];
@@ -270,6 +301,9 @@ export interface StudentPerformancePayload {
 }
 
 export interface StudentTutorContext {
+  chapterId?: string;
+  chapterNumber?: number;
+  chapterTitle?: string;
   weakTopics: Array<{
     topicId: string;
     topicTitle: string;
@@ -292,6 +326,8 @@ export interface StudentTutorContext {
     latestQuizTitle?: string;
     latestScore?: string;
   };
+  strongTopics?: string[];
+  unattemptedTopics?: string[];
 }
 
 export interface RecommendedAction {
@@ -328,6 +364,9 @@ export interface SubmittedAnswer {
 
 export interface QuizAttemptResult {
   id?: string;
+  chapterId?: string;           // Associated Chapter ID (e.g. 'chapter-1', 'chapter-2')
+  chapterNumber?: number;       // Associated Chapter Number (1, 2, 3...)
+  chapterTitle?: string;        // Associated Chapter Title
   quizTitle: string;
   quizType: 'practice' | 'chapter_test';
   totalQuestions: number;       // total_questions
@@ -355,17 +394,33 @@ export interface QuizAttemptResult {
 
 export interface TopicProgress {
   topicId: string;
+  chapterId?: string;
   completed: boolean;
   viewedSectionsCount: number;
   quickCheckPassed: boolean;
   masteryPercentage: number;
 }
 
+export interface ChapterProgressSummary {
+  chapterId: string;
+  completionPercentage: number;
+  completedTopicsCount: number;
+  totalTopics: number;
+  averageQuizScore?: number;
+  latestAssessmentScore?: number;
+  assessmentStatus: 'completed' | 'needs_practice' | 'not_attempted';
+  assessmentStatusLabel: string;
+  status: ChapterStatus;
+}
+
 export interface UserProgressData {
   studentName: string;
-  topicProgress: Record<string, TopicProgress>;
-  quizHistory: QuizAttemptResult[];
+  activeChapterId?: string;
+  lastActiveChapterId?: string;
   lastActiveTopicId: string;
+  topicProgress: Record<string, TopicProgress>;
+  chapterProgress?: Record<string, ChapterProgressSummary>;
+  quizHistory: QuizAttemptResult[];
 }
 
 export interface ChatMessage {

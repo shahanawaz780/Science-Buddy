@@ -23,7 +23,6 @@ import {
   Table
 } from 'lucide-react';
 import { useProgress } from '../context/ProgressContext';
-import { CHAPTER_1_DATA } from '../data/chapter1Data';
 import { NavigationTab } from '../types';
 import { calculateTopicStatistics } from '../services/progressEngine';
 import { useAIRecommendation } from '../hooks/useAIRecommendation';
@@ -43,6 +42,11 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({
     overallProgressPercentage, 
     completedTopicsCount, 
     averageQuizScorePercentage, 
+    currentChapter,
+    allChapters,
+    activeChapterId,
+    setActiveChapterId,
+    getChapterProgress,
     loadSampleData,
     resetProgress,
     supabaseStatus,
@@ -53,8 +57,9 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({
 
   const [seedNotice, setSeedNotice] = useState<string | null>(null);
 
-  const allTopics = CHAPTER_1_DATA.topics;
+  const allTopics = currentChapter.topics;
   const totalTopics = allTopics.length;
+  const chapterProg = getChapterProgress(currentChapter.id);
 
   const { 
     recommendation: aiRecommendation, 
@@ -70,7 +75,7 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({
   };
 
   // 1. Overall Metrics
-  const learningCompletionPercentage = Math.round((completedTopicsCount / totalTopics) * 100);
+  const learningCompletionPercentage = chapterProg.completionPercentage;
 
   const quizAccuracyPercentage = progress.quizHistory.length > 0
     ? Math.round(progress.quizHistory.reduce((acc, q) => acc + q.percentage, 0) / progress.quizHistory.length)
@@ -78,7 +83,7 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({
 
   const testsCompletedCount = progress.quizHistory.length;
   const overallScore = Math.round((learningCompletionPercentage * 0.4) + (quizAccuracyPercentage * 0.6));
-  const chapter1Progress = overallProgressPercentage;
+  const chapterProgressVal = chapterProg.completionPercentage;
 
   // 2. Topic Performance & Classification via pure progress engine
   const topicStats = calculateTopicStatistics(allTopics, progress);
@@ -222,19 +227,49 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({
       </section>
 
       {/* CHAPTER PROGRESS CARD */}
-      <section id="chapter-1-progress-card" className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-4">
+      <section id="chapter-progress-card" className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-5">
+        {/* Chapter Selection Bar */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin">
+          {allChapters.map((ch) => {
+            const isActive = ch.id === activeChapterId;
+            const prog = getChapterProgress(ch.id);
+
+            return (
+              <button
+                key={ch.id}
+                id={`progress-chapter-btn-${ch.number}`}
+                onClick={() => setActiveChapterId(ch.id)}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
+                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                }`}
+              >
+                <span>Ch {ch.number}: {ch.title}</span>
+                {prog.completionPercentage > 0 && (
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                    isActive ? 'bg-emerald-800 text-emerald-100' : 'bg-emerald-50 text-emerald-700'
+                  }`}>
+                    {prog.completionPercentage}%
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
           <div>
             <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-              {CHAPTER_1_DATA.board} Grade {CHAPTER_1_DATA.grade} • {CHAPTER_1_DATA.subject}
+              {currentChapter.board} Grade {currentChapter.grade} • {currentChapter.subject}
             </span>
             <h3 className="text-xl font-extrabold font-heading text-slate-900 mt-0.5">
-              Chapter {CHAPTER_1_DATA.number}: {CHAPTER_1_DATA.title}
+              Chapter {currentChapter.number}: {currentChapter.title}
             </h3>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-2xl font-black font-heading text-emerald-800">
-              {chapter1Progress}%
+              {chapterProgressVal}%
             </span>
             <button
               onClick={() => onNavigate('learn')}
@@ -249,12 +284,12 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({
         <div className="space-y-1.5">
           <div className="flex justify-between text-xs font-semibold text-slate-600">
             <span>Overall Chapter Completion</span>
-            <span>{completedTopicsCount} / {totalTopics} Topics Completed</span>
+            <span>{chapterProg.completedTopics} / {totalTopics} Topics Completed</span>
           </div>
           <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500"
-              style={{ width: `${chapter1Progress}%` }}
+              style={{ width: `${chapterProgressVal}%` }}
             />
           </div>
         </div>
@@ -266,7 +301,7 @@ export const ProgressPage: React.FC<ProgressPageProps> = ({
           <div>
             <div className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
               <Table className="w-4 h-4 text-emerald-600" />
-              <span>Chapter 1 Topic Breakdown</span>
+              <span>Chapter {currentChapter.number} Topic Breakdown</span>
             </div>
             <h3 className="text-lg font-bold font-heading text-slate-900 mt-0.5">
               Topic Performance & Mastery Classification

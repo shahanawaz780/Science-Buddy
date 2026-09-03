@@ -7,7 +7,7 @@ import {
   Award
 } from 'lucide-react';
 import { QuizConfig } from '../types';
-import { QUIZ_CONFIGS, CHAPTER_1_DATA } from '../data/chapter1Data';
+import { getExamBlueprints } from '../services/curriculumService';
 import { useProgress } from '../context/ProgressContext';
 import { Button, Card, Badge } from '../components/ui';
 
@@ -20,11 +20,47 @@ export const PracticePage: React.FC<PracticePageProps> = ({
   onStartQuiz, 
   onOpenLesson 
 }) => {
-  const { progress, averageQuizScorePercentage } = useProgress();
+  const { 
+    progress, 
+    averageQuizScorePercentage, 
+    currentChapter, 
+    allChapters, 
+    activeChapterId, 
+    setActiveChapterId 
+  } = useProgress();
+
+  const quizConfigs = getExamBlueprints(activeChapterId);
 
   return (
     <div id="practice-screen" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 animate-in fade-in duration-200 pb-24 md:pb-12">
       
+      {/* Chapter Selection Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+        {allChapters.map((ch) => {
+          const isActive = ch.id === activeChapterId;
+
+          return (
+            <button
+              key={ch.id}
+              id={`practice-chapter-btn-${ch.number}`}
+              onClick={() => setActiveChapterId(ch.id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold border transition-all duration-150 shrink-0 cursor-pointer ${
+                isActive
+                  ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm shadow-indigo-600/20'
+                  : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold ${
+                isActive ? 'bg-white text-indigo-700' : 'bg-slate-100 text-slate-700'
+              }`}>
+                {ch.number}
+              </span>
+              <span className="truncate max-w-[180px] sm:max-w-[240px]">Ch {ch.number}: {ch.title}</span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Practice Header Banner */}
       <Card variant="default" padding="lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -33,10 +69,10 @@ export const PracticePage: React.FC<PracticePageProps> = ({
               Class 6 CBSE Practice Arena
             </Badge>
             <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 tracking-tight">
-              Practice & Master Chapter 1
+              Practice & Master Chapter {currentChapter.number}
             </h1>
             <p className="text-sm text-slate-600 max-w-xl leading-relaxed">
-              Test your scientific curiosity, inquiry skills, the scientific method, and Grade 6 science themes. Choose between low-pressure practice or the formal chapter test.
+              {currentChapter.title} — Choose between quick formative practice with immediate step-by-step guidance or the comprehensive chapter examination.
             </p>
           </div>
 
@@ -61,13 +97,13 @@ export const PracticePage: React.FC<PracticePageProps> = ({
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold font-heading text-slate-900 flex items-center gap-2">
             <Award className="w-5 h-5 text-indigo-600" />
-            <span>Select Quiz Mode</span>
+            <span>Select Quiz Mode for Chapter {currentChapter.number}</span>
           </h2>
-          <span className="text-xs text-slate-500 font-medium">Real CBSE questions</span>
+          <span className="text-xs text-slate-500 font-medium">Real CBSE & NCERT questions</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {QUIZ_CONFIGS.map((config) => {
+          {quizConfigs.map((config) => {
             const isPractice = config.type === 'practice';
 
             return (
@@ -147,14 +183,14 @@ export const PracticePage: React.FC<PracticePageProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold font-heading text-slate-900">
-              Targeted Topic Practice
+              Targeted Topic Practice for Chapter {currentChapter.number}
             </h3>
             <p className="text-xs text-slate-500">Want to revise a specific section? Open any topic to test your understanding.</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {CHAPTER_1_DATA.topics.map(t => (
+          {currentChapter.topics.map(t => (
             <div
               key={t.id}
               onClick={() => onOpenLesson(t.id)}
@@ -175,3 +211,4 @@ export const PracticePage: React.FC<PracticePageProps> = ({
     </div>
   );
 };
+

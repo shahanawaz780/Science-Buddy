@@ -7,6 +7,8 @@ export interface EvaluateSubjectiveParams {
   expected_key_points?: string[];
   marking_criteria?: ContentPackSubjectiveRubricItem | any;
   marks: number;
+  chapter_id?: string;
+  chapter_number?: number;
 }
 
 export interface EvaluationResponse {
@@ -36,7 +38,9 @@ export async function evaluateSubjectiveAnswer(params: EvaluateSubjectiveParams)
         expected_answer: params.expected_answer || '',
         expected_key_points: params.expected_key_points || [],
         marking_criteria: params.marking_criteria || null,
-        marks: maxScore
+        marks: maxScore,
+        chapter_id: params.chapter_id,
+        chapter_number: params.chapter_number
       }),
     });
 
@@ -97,7 +101,9 @@ export async function evaluateBatchSubjectiveAnswers(
     expected_key_points?: string[];
     marking_criteria?: any;
     marks: number;
-  }>
+    chapter_id?: string;
+  }>,
+  chapterId?: string
 ): Promise<Record<string, SubjectiveEvaluationResult>> {
   if (!items || items.length === 0) return {};
 
@@ -108,6 +114,7 @@ export async function evaluateBatchSubjectiveAnswers(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        chapter_id: chapterId,
         items: items.map(item => ({
           id: item.id,
           question: item.question,
@@ -115,7 +122,8 @@ export async function evaluateBatchSubjectiveAnswers(
           expected_answer: item.expected_answer,
           expected_key_points: item.expected_key_points,
           marking_criteria: item.marking_criteria,
-          marks: item.marks
+          marks: item.marks,
+          chapter_id: item.chapter_id || chapterId
         }))
       }),
     });

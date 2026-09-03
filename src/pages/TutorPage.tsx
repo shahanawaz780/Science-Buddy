@@ -24,7 +24,6 @@ import {
   Wand2
 } from 'lucide-react';
 import { ChatMessage, StudentTutorContext } from '../types';
-import { CHAPTER_1_DATA } from '../data/chapter1Data';
 import { useProgress } from '../context/ProgressContext';
 import { buildPerformancePayload } from '../services/recommendationService';
 
@@ -33,9 +32,10 @@ interface TutorPageProps {
   initialPrompt?: string;
 }
 
-// Maps chapter topics to friendly skill names
+// Maps chapter topics to friendly skill names across Chapter 1 and Chapter 2
 function getSkillNameForTopic(topicId: string, topicTitle: string): string {
   const lower = (topicTitle + ' ' + topicId).toLowerCase();
+  // Chapter 1
   if (lower.includes('how do scientists work') || lower.includes('method') || topicId === 'topic-3') {
     return 'Scientific Method';
   }
@@ -54,14 +54,33 @@ function getSkillNameForTopic(topicId: string, topicTitle: string): string {
   if (lower.includes('collaborat') || topicId === 'topic-6') {
     return 'Scientific Collaboration';
   }
-  return 'Scientific Method';
+  // Chapter 2
+  if (lower.includes('root') || lower.includes('venation') || topicId === 'C2_T2') {
+    return 'Plant Structures: Roots & Venation';
+  }
+  if (lower.includes('seed') || lower.includes('germination') || topicId === 'C2_T3') {
+    return 'Seed Structure & Germination';
+  }
+  if (lower.includes('adaptation') || lower.includes('habitat') || topicId === 'C2_T5') {
+    return 'Habitats & Survival Adaptations';
+  }
+  if (lower.includes('plant') || lower.includes('herb') || lower.includes('shrub') || topicId === 'C2_T1') {
+    return 'Plant Diversity & Structure';
+  }
+  if (lower.includes('animal') || topicId === 'C2_T4') {
+    return 'Animal Diversity & Classification';
+  }
+  if (lower.includes('living') || lower.includes('character') || topicId === 'C2_T6') {
+    return 'Characteristics of Living Beings';
+  }
+  return 'Scientific Inquiry & Concepts';
 }
 
 export const TutorPage: React.FC<TutorPageProps> = ({ 
   initialTopicTitle, 
   initialPrompt 
 }) => {
-  const { progress, activeTopicId, setActiveTopicId } = useProgress();
+  const { progress, activeTopicId, setActiveTopicId, currentChapter, allChapters, activeChapterId, setActiveChapterId } = useProgress();
   const [selectedTopicId, setSelectedTopicId] = useState<string>(activeTopicId || 'all');
   
   const [inputMessage, setInputMessage] = useState('');
@@ -73,9 +92,9 @@ export const TutorPage: React.FC<TutorPageProps> = ({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // 1. Retrieve the student's relevant Chapter 1 learning progress before session
+  // 1. Retrieve the student's relevant learning progress for current chapter
   const studentLearningProfile = useMemo(() => {
-    const payload = buildPerformancePayload(progress, CHAPTER_1_DATA.topics);
+    const payload = buildPerformancePayload(progress, currentChapter.topics);
 
     // Identify weak topics (Needs Practice or lowest accuracy)
     const weakTopicsList = payload.topicScores
@@ -89,7 +108,7 @@ export const TutorPage: React.FC<TutorPageProps> = ({
 
     const primaryWeakSkill = primaryWeak 
       ? getSkillNameForTopic(primaryWeak.topicId, primaryWeak.topicTitle)
-      : 'Scientific Method';
+      : 'Scientific Inquiry';
 
     // Calculate quiz summary without exposing hidden formulas
     const quizzesCount = progress.quizHistory.length;
@@ -100,6 +119,9 @@ export const TutorPage: React.FC<TutorPageProps> = ({
     const latestQuiz = quizzesCount > 0 ? progress.quizHistory[quizzesCount - 1] : null;
 
     const context: StudentTutorContext = {
+      chapterId: currentChapter.id,
+      chapterNumber: currentChapter.number,
+      chapterTitle: currentChapter.title,
       weakTopics: weakTopicsList.map(w => ({
         topicId: w.topicId,
         topicTitle: w.topicTitle,
@@ -107,8 +129,10 @@ export const TutorPage: React.FC<TutorPageProps> = ({
         attempts: w.attempts,
         classification: w.classification
       })),
+      strongTopics: payload.topicScores.filter(t => t.accuracy >= 80 && t.attempts > 0).map(t => t.topicTitle),
+      unattemptedTopics: payload.topicScores.filter(t => t.attempts === 0).map(t => t.topicTitle),
       primaryWeakSkill,
-      primaryWeakTopicTitle: primaryWeak ? primaryWeak.topicTitle : 'How Do Scientists Work?',
+      primaryWeakTopicTitle: primaryWeak ? primaryWeak.topicTitle : currentChapter.topics[0]?.title || 'Science Concepts',
       recentIncorrectAnswers: payload.incorrectQuestions.slice(0, 5),
       completedLessons: payload.completedTopics,
       quizPerformanceSummary: {
@@ -126,7 +150,7 @@ export const TutorPage: React.FC<TutorPageProps> = ({
       primaryWeakSkill,
       hasWeakTopic: weakTopicsList.length > 0 || payload.incorrectQuestions.length > 0 || (primaryWeak && primaryWeak.accuracy < 80)
     };
-  }, [progress]);
+  }, [progress, currentChapter]);
 
   // 2. The 5 student choice actions specified in requirements:
   // Explain, Practice, Quiz Me, Give Hint, Teach Me Again
@@ -175,9 +199,9 @@ export const TutorPage: React.FC<TutorPageProps> = ({
     let welcomeText = `**Hi ${progress.studentName}! 👋 I am your Science Buddy AI Tutor.**\n\n`;
 
     if (hasWeakTopic && primaryWeak) {
-      welcomeText += `🎯 **Let's improve your ${primaryWeakSkill} skills!**\n\nI reviewed your recent Chapter 1 practice and noticed that strengthening **${primaryWeak.topicTitle}** will give you a big confidence boost. We'll make sure concepts like the 5 steps and making testable hypotheses feel second nature!\n\nChoose an action below to get started:`;
+      welcomeText += `🎯 **Let's improve your ${primaryWeakSkill} skills!**\n\nI reviewed your recent Chapter ${currentChapter.number} practice and noticed that strengthening **${primaryWeak.topicTitle}** will give you a big confidence boost. We'll make sure concepts feel clear, logical, and second nature!\n\nChoose an action below to get started:`;
     } else {
-      welcomeText += `🎯 **Let's explore Chapter 1: The Wonderful World of Science!**\n\nYou've made great progress on your lessons. Would you like to practice, take a quick quiz, or explore a tricky science puzzle?\n\nChoose an action below to get started:`;
+      welcomeText += `🎯 **Let's explore Chapter ${currentChapter.number}: ${currentChapter.title}!**\n\nYou've made great progress on your lessons. Would you like to practice, take a quick quiz, or explore a tricky science puzzle?\n\nChoose an action below to get started:`;
     }
 
     return [
@@ -189,6 +213,28 @@ export const TutorPage: React.FC<TutorPageProps> = ({
       }
     ];
   });
+
+  // Update welcome greeting whenever chapter changes
+  useEffect(() => {
+    const { primaryWeakSkill, primaryWeak, hasWeakTopic } = studentLearningProfile;
+    let welcomeText = `**Hi ${progress.studentName}! 👋 I am your Science Buddy AI Tutor.**\n\n`;
+
+    if (hasWeakTopic && primaryWeak) {
+      welcomeText += `🎯 **Let's improve your ${primaryWeakSkill} skills!**\n\nI reviewed your recent Chapter ${currentChapter.number}: *${currentChapter.title}* practice and noticed that strengthening **${primaryWeak.topicTitle}** will give you a big confidence boost. We'll make sure concepts feel clear, logical, and second nature!\n\nChoose an action below to get started:`;
+    } else {
+      welcomeText += `🎯 **Let's explore Chapter ${currentChapter.number}: ${currentChapter.title}!**\n\nYou've made great progress on your lessons. Would you like to practice, take a quick quiz, or explore a tricky science puzzle?\n\nChoose an action below to get started:`;
+    }
+
+    setMessages([
+      {
+        id: `welcome-${currentChapter.id}`,
+        role: 'model',
+        content: welcomeText,
+        timestamp: new Date()
+      }
+    ]);
+    setSelectedTopicId('all');
+  }, [currentChapter.id]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -225,10 +271,10 @@ export const TutorPage: React.FC<TutorPageProps> = ({
     setIsLoading(true);
 
     // Get current topic context
-    const currentTopicObj = CHAPTER_1_DATA.topics.find(t => t.id === selectedTopicId);
+    const currentTopicObj = currentChapter.topics.find(t => t.id === selectedTopicId);
     const topicContext = currentTopicObj 
       ? `Topic ${currentTopicObj.order} (${currentTopicObj.id}): ${currentTopicObj.title} - ${currentTopicObj.learningObjective}` 
-      : `All Topics in Chapter ${CHAPTER_1_DATA.number}: ${CHAPTER_1_DATA.title} (Focus: ${studentLearningProfile.primaryWeakSkill})`;
+      : `All Topics in Chapter ${currentChapter.number}: ${currentChapter.title} (Focus: ${studentLearningProfile.primaryWeakSkill})`;
 
     try {
       const response = await fetch('/api/gemini/tutor', {
@@ -240,6 +286,11 @@ export const TutorPage: React.FC<TutorPageProps> = ({
             content: m.content
           })),
           topicContext,
+          chapterContext: `Chapter ${currentChapter.number}: ${currentChapter.title} (${currentChapter.board} Grade ${currentChapter.grade})`,
+          chapterId: currentChapter.id,
+          chapterNumber: currentChapter.number,
+          chapterTitle: currentChapter.title,
+          currentTopic: currentTopicObj,
           promptType: promptType || (query.length < 35 ? query : undefined),
           studentContext: studentLearningProfile.context
         })
@@ -250,7 +301,7 @@ export const TutorPage: React.FC<TutorPageProps> = ({
       }
 
       const data = await response.json();
-      const replyContent = data.reply || "Let's explore that in Class 6 Science! What part of Chapter 1 would you like to investigate?";
+      const replyContent = data.reply || `Let's explore that in Class 6 Science! What part of Chapter ${currentChapter.number} would you like to investigate?`;
 
       const aiMsg: ChatMessage = {
         id: `ai-${Date.now()}`,
@@ -314,15 +365,16 @@ export const TutorPage: React.FC<TutorPageProps> = ({
       {
         id: 'welcome-reset',
         role: 'model',
-        content: `**Chat reset! 🔄** Ready to explore **Class 6 CBSE Science • Chapter 1: The Wonderful World of Science**!\n\n🎯 **Let's improve your ${studentLearningProfile.primaryWeakSkill} skills!** Pick an action below or ask any question.`,
+        content: `**Chat reset! 🔄** Ready to explore **Class 6 CBSE Science • Chapter ${currentChapter.number}: ${currentChapter.title}**!\n\n🎯 **Let's improve your ${studentLearningProfile.primaryWeakSkill} skills!** Pick an action below or ask any question.`,
         timestamp: new Date()
       }
     ]);
   };
 
-  // Helper to render formatted markdown with special callout boxes for Chapter 1 structured format
+  // Helper to render formatted markdown with special callout boxes for Chapter structured format
   const renderMessageContent = (content: string, isAI: boolean) => {
-    const isOutOfScope = content.includes("This information is not available in this chapter") || 
+    const isOutOfScope = content.includes("outside our current learning context") || 
+      content.includes("This information is not available in this chapter") || 
       content.includes("I don't have enough information from this chapter to answer that confidently");
 
     // Standard markdown line renderer
@@ -363,32 +415,57 @@ export const TutorPage: React.FC<TutorPageProps> = ({
           <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-medium flex items-start gap-2.5">
             <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold text-amber-900 mb-1">Chapter 1 Knowledge Boundary</p>
-              <p>This information is not available in Chapter 1: The Wonderful World of Science.</p>
+              <p className="font-bold text-amber-900 mb-1">Chapter {currentChapter.number} Learning Boundary</p>
+              <p>This question is outside our current learning context of Chapter {currentChapter.number}: {currentChapter.title}.</p>
             </div>
           </div>
           <p className="text-xs text-slate-600">
-            Let's stay focused on <strong>Class 6 CBSE Chapter 1: The Wonderful World of Science</strong>! Try asking about the Scientific Method, Bicycle Puncture Test, or Plant Light Exploration below:
+            Let's stay focused on <strong>Class 6 CBSE Chapter {currentChapter.number}: {currentChapter.title}</strong>! Try one of these approved topics:
           </p>
           <div className="flex flex-wrap gap-1.5 pt-1">
-            <button
-              onClick={() => handleSendMessage('Explain the 5 steps of the Scientific Method with an everyday example.', 'EXPLAIN')}
-              className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200"
-            >
-              🔬 Scientific Method Steps
-            </button>
-            <button
-              onClick={() => handleSendMessage('Explain the difference between Hypothesizing and Testing with a simple example.', 'EXPLAIN')}
-              className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200"
-            >
-              💡 Hypothesizing vs Testing
-            </button>
-            <button
-              onClick={() => handleSendMessage('How is science like an unending jigsaw puzzle?', 'EXPLAIN')}
-              className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200"
-            >
-              🧩 Jigsaw Puzzle Analogy
-            </button>
+            {currentChapter.number === 2 ? (
+              <>
+                <button
+                  onClick={() => handleSendMessage('Explain the difference between Taproots and Fibrous roots with leaf venation examples.', 'EXPLAIN')}
+                  className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 cursor-pointer"
+                >
+                  🍃 Roots & Leaf Venation
+                </button>
+                <button
+                  onClick={() => handleSendMessage('What are the three conditions strictly needed for seed germination?', 'EXPLAIN')}
+                  className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 cursor-pointer"
+                >
+                  🌱 Seed Germination
+                </button>
+                <button
+                  onClick={() => handleSendMessage('How is a camel adapted to the desert and a fish to water?', 'EXPLAIN')}
+                  className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 cursor-pointer"
+                >
+                  🐾 Animal Adaptations
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleSendMessage('Explain the 5 steps of the Scientific Method with an everyday example.', 'EXPLAIN')}
+                  className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 cursor-pointer"
+                >
+                  🔬 Scientific Method Steps
+                </button>
+                <button
+                  onClick={() => handleSendMessage('Explain the difference between Hypothesizing and Testing with a simple example.', 'EXPLAIN')}
+                  className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 cursor-pointer"
+                >
+                  💡 Hypothesizing vs Testing
+                </button>
+                <button
+                  onClick={() => handleSendMessage('How is science like an unending jigsaw puzzle?', 'EXPLAIN')}
+                  className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 cursor-pointer"
+                >
+                  🧩 Jigsaw Puzzle Analogy
+                </button>
+              </>
+            )}
           </div>
         </div>
       );
@@ -420,24 +497,37 @@ export const TutorPage: React.FC<TutorPageProps> = ({
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
-              Personalized to your learning progress in Chapter 1: The Wonderful World of Science
+              Personalized to your learning progress in Chapter {currentChapter.number}: {currentChapter.title}
             </p>
           </div>
         </div>
 
-        {/* Topic Context Selector & Reset */}
-        <div className="flex items-center gap-2">
-          <label htmlFor="tutor-topic-select" className="text-xs font-bold text-slate-500 shrink-0 hidden sm:inline">
-            Topic Focus:
-          </label>
+        {/* Chapter & Topic Context Selector & Reset */}
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            id="tutor-chapter-select"
+            value={activeChapterId}
+            onChange={(e) => {
+              setActiveChapterId(e.target.value);
+              setSelectedTopicId('all');
+            }}
+            className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-300 text-xs font-bold text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-300 cursor-pointer"
+          >
+            {allChapters.map(ch => (
+              <option key={ch.id} value={ch.id}>
+                Chapter {ch.number}: {ch.title}
+              </option>
+            ))}
+          </select>
+
           <select
             id="tutor-topic-select"
             value={selectedTopicId}
             onChange={(e) => setSelectedTopicId(e.target.value)}
-            className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-300 cursor-pointer"
+            className="w-full sm:w-auto px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-300 cursor-pointer"
           >
-            <option value="all">Entire Chapter 1 (All 6 Topics)</option>
-            {CHAPTER_1_DATA.topics.map(t => (
+            <option value="all">Entire Chapter {currentChapter.number} (All {currentChapter.totalTopics} Topics)</option>
+            {currentChapter.topics.map(t => (
               <option key={t.id} value={t.id}>
                 Topic {t.order}: {t.title}
               </option>
@@ -447,7 +537,7 @@ export const TutorPage: React.FC<TutorPageProps> = ({
           <button
             onClick={handleClearChat}
             title="Clear and reset chat"
-            className="p-2 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors shrink-0"
+            className="p-2 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors shrink-0 cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
           </button>

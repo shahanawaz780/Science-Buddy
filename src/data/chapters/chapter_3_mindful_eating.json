@@ -1,0 +1,505 @@
+{
+  "metadata": {
+    "product": "Science Buddy",
+    "phase": "MVP Phase 2",
+    "board": "CBSE",
+    "grade": 6,
+    "subject": "Science",
+    "textbook": "Curiosity",
+    "chapter_number": 3,
+    "chapter_title": "Mindful Eating: A Path to a Healthy Body",
+    "source_file": "NCERT_Class_6_Science_Chapter_3_Curiosity.pdf",
+    "source_basis": "NCERT Class 6 Curiosity Textbook Chapter 3",
+    "note": "Complete content pack covering essential nutrients, food testing experiments, balanced diet, and deficiency disorders."
+  },
+  "learning_objectives": [
+    "Identify the major nutrients in food: Carbohydrates, Fats, Proteins, Vitamins, Minerals, Dietary Fibre, and Water.",
+    "Explain laboratory chemical tests for starch, proteins, and fats in food samples.",
+    "Understand the biological significance of dietary fibre (roughage) and water for digestive health.",
+    "Design and describe a balanced diet using traditional Indian food components.",
+    "Identify common deficiency diseases (Scurvy, Rickets, Beriberi, Goitre, Anaemia) and their preventive foods."
+  ],
+  "topics": [
+    {
+      "topic_id": "C3_T1",
+      "title": "Major Nutrients & Energy Sources",
+      "source_section": "3.1 What Do Different Food Items Contain?",
+      "learning_objective": "Classify nutrients into energy-giving, body-building, and protective categories.",
+      "lesson": {
+        "concept_explanation": "Food consists of essential chemical substances called nutrients that our body requires for energy, growth, cellular repair, and defense against diseases. The major nutrients are Carbohydrates and Fats (energy-giving foods), Proteins (body-building foods), and Vitamins and Minerals (protective foods). In addition, food contains dietary fibre (roughage) and water.",
+        "simple_explanation": "Think of your body as a car: carbohydrates and fats are the fuel (petrol), proteins build the engine and body parts, while vitamins and minerals are the shields and engine oil keeping everything running smoothly!",
+        "key_points": [
+          "Carbohydrates are the main immediate energy source (found in rice, wheat, potatoes, sugar, bananas).",
+          "Fats provide more than twice as much energy per gram as carbohydrates (found in butter, ghee, mustard oil, groundnuts).",
+          "Proteins are essential for muscle development, tissue growth, and healing wounds (found in pulses/dal, milk, paneer, eggs, soyabean).",
+          "Vitamins and Minerals protect the body from infections and maintain healthy bones, teeth, and eyesight."
+        ],
+        "important_terms": [
+          {
+            "term": "Nutrient",
+            "meaning": "A chemical substance present in food that provides nourishment essential for growth, maintenance, and repair of the body."
+          },
+          {
+            "term": "Carbohydrates",
+            "meaning": "Energy-yielding organic compounds consisting of starch and simple sugars."
+          },
+          {
+            "term": "Proteins",
+            "meaning": "Complex organic compounds made of amino acids required for building, maintaining, and repairing body tissues."
+          }
+        ],
+        "real_life_examples": [
+          "Athletes and farmers consume foods rich in carbohydrates (like rice, roti, and bananas) before heavy physical work for quick stamina.",
+          "Doctors advise growing children and recovering patients to eat protein-rich foods like boiled pulses, eggs, or paneer."
+        ],
+        "quick_check": [
+          "Which food group provides more energy per gram: carbohydrates or fats?",
+          "Why are proteins called 'body-building foods'?"
+        ]
+      }
+    },
+    {
+      "topic_id": "C3_T2",
+      "title": "Laboratory Tests for Food Nutrients",
+      "source_section": "3.2 Testing for Starch, Protein, and Fat in the Lab",
+      "learning_objective": "Describe scientific chemical tests used to detect the presence of starch, proteins, and fats.",
+      "lesson": {
+        "concept_explanation": "Scientists detect specific nutrients in food samples using characteristic chemical reactions: Dilute Iodine solution turns blue-black in the presence of starch; Copper Sulphate and Caustic Soda (Sodium Hydroxide) produce a distinctive violet color with proteins; rubbing food against a paper strip leaves a translucent oily patch for fats.",
+        "simple_explanation": "You can be a food detective with simple lab reagents! Iodine turns dark blue-black for starch, chemicals turn purple-violet for proteins, and fats leave a see-through oily mark on paper.",
+        "key_points": [
+          "Starch Test: Add 2-3 drops of dilute Iodine solution to raw potato or boiled rice. A blue-black color confirms starch.",
+          "Protein Test: Grind food into paste, add 10 drops of water, 2 drops of Copper Sulphate solution, and 10 drops of Caustic Soda (NaOH) solution. A violet color confirms proteins.",
+          "Fat Test: Wrap food in a clean white paper and crush gently. An oily, translucent patch visible against light confirms fat."
+        ],
+        "important_terms": [
+          {
+            "term": "Iodine Test",
+            "meaning": "A chemical test where starch reacts with dilute iodine solution to yield a blue-black complex."
+          },
+          {
+            "term": "Caustic Soda",
+            "meaning": "Sodium Hydroxide (NaOH), a strong alkaline chemical used alongside copper sulphate to test for proteins."
+          },
+          {
+            "term": "Translucent Patch",
+            "meaning": "A semi-transparent greasy mark left on paper by lipids/fats that allows partial light to pass through."
+          }
+        ],
+        "real_life_examples": [
+          "Putting a drop of Betadine / dilute iodine on a slice of raw bread or cut potato immediately produces a deep blue-black stain.",
+          "Crushing groundnut or fried chips inside brown packing paper reveals a clear greasy spot that remains even after drying."
+        ],
+        "quick_check": [
+          "What color change occurs when iodine is added to a food containing starch?",
+          "Which two chemical solutions are required to test for proteins in a food sample?"
+        ]
+      }
+    },
+    {
+      "topic_id": "C3_T3",
+      "title": "Vitamins, Minerals & Dietary Fibre",
+      "source_section": "3.3 Protective Nutrients, Roughage & Water",
+      "learning_objective": "Understand the protective role of vitamins, minerals, roughage, and water in maintaining health.",
+      "lesson": {
+        "concept_explanation": "Although required in small quantities compared to energy foods, Vitamins (A, B-complex, C, D, E, K) and Minerals (Iron, Calcium, Phosphorus, Iodine) are indispensable for disease immunity, blood formation, and bone density. Dietary fibre (roughage) adds bulk to undigested food, assisting bowel peristalsis, while water regulates body temperature and transports nutrients.",
+        "simple_explanation": "Vitamins and minerals are your body's shield and toolkit. Fibre keeps your digestion running like a clean conveyor belt, and water acts as the river carrying everything inside you!",
+        "key_points": [
+          "Vitamin A keeps eyes and skin healthy (Carrots, Papaya, Milk).",
+          "Vitamin C boosts immunity and heals wounds; destroyed by cooking heat (Amla, Lemon, Orange, Guava).",
+          "Vitamin D helps the body absorb calcium for strong bones and teeth (Sunlight, Milk, Fish).",
+          "Iron is necessary for hemoglobin in red blood cells (Spinach, Jaggery, Apples).",
+          "Dietary Fibre (Roughage) does not provide nutrients, but prevents constipation by helping stools pass easily (Whole grains, fresh fruits, vegetables with skin)."
+        ],
+        "important_terms": [
+          {
+            "term": "Roughage",
+            "meaning": "Indigestible plant cellulose and dietary fibre that adds bulk to digestive waste and aids bowel movements."
+          },
+          {
+            "term": "Hemoglobin",
+            "meaning": "An iron-rich protein in red blood cells that transports oxygen from lungs to body cells."
+          },
+          {
+            "term": "Peristalsis",
+            "meaning": "Wave-like muscle contractions of the digestive tract that push food through the intestines."
+          }
+        ],
+        "real_life_examples": [
+          "Eating Indian Gooseberry (Amla) provides the richest natural source of Vitamin C to resist common colds.",
+          "Drinking 6-8 glasses of clean water daily keeps the kidneys healthy and prevents dehydration headaches."
+        ],
+        "quick_check": [
+          "Why is dietary fibre important even though it provides no energy?",
+          "Which vitamin is easily destroyed by heating and cooking?"
+        ]
+      }
+    },
+    {
+      "topic_id": "C3_T4",
+      "title": "The Balanced Diet & Indian Thali",
+      "source_section": "3.4 What is a Balanced Diet?",
+      "learning_objective": "Design a wholesome, budget-friendly balanced diet containing appropriate proportions of all nutrients.",
+      "lesson": {
+        "concept_explanation": "A balanced diet contains adequate proportions of all essential nutrients (carbohydrates, fats, proteins, vitamins, minerals) along with sufficient roughage and water required for optimal physical and mental growth. A balanced diet does not require expensive imported foods; traditional Indian meals (roti/rice, dal, seasonal vegetables, curd, salad) provide complete nutrition affordably.",
+        "simple_explanation": "A balanced plate has a rainbow of foods: a portion of grains for energy, dal or paneer for muscles, fresh greens for protection, and a glass of water or buttermilk!",
+        "key_points": [
+          "A balanced diet varies according to age, gender, and level of physical activity.",
+          "Overeating fats leads to Obesity (excessive accumulation of body fat), while under-eating causes malnutrition.",
+          "Proper cooking practices matter: excessive washing of peeled vegetables washes away water-soluble vitamins (B and C).",
+          "Fermented foods (Idli, Dhokla) and sprouted pulses (Moong, Chana) multiply vitamin content naturally at zero extra cost."
+        ],
+        "important_terms": [
+          {
+            "term": "Balanced Diet",
+            "meaning": "A diet that contains all essential nutrients in proper quantities, along with adequate roughage and water."
+          },
+          {
+            "term": "Obesity",
+            "meaning": "A medical condition of carrying excess body fat caused by consuming far more calories (especially fats and sugars) than expended."
+          },
+          {
+            "term": "Sprouting",
+            "meaning": "The process of germinating dry seeds in moisture to greatly increase their vitamin B, C, and protein bio-availability."
+          }
+        ],
+        "real_life_examples": [
+          "A traditional Indian thali with Roti, Dal, Palak (Spinach), Curd, and Cucumber salad is an ideal example of a complete balanced diet.",
+          "Soaking moong beans in a wet muslin cloth overnight produces tender white sprouts rich in live digestive enzymes and vitamins."
+        ],
+        "quick_check": [
+          "What is the definition of a balanced diet?",
+          "Why should we avoid washing cut vegetables repeatedly in water?"
+        ]
+      }
+    },
+    {
+      "topic_id": "C3_T5",
+      "title": "Deficiency Diseases & Prevention",
+      "source_section": "3.5 Deficiency Diseases and Disorders",
+      "learning_objective": "Identify diseases caused by the prolonged lack of specific nutrients and their dietary prevention.",
+      "lesson": {
+        "concept_explanation": "Diseases that occur due to the prolonged lack of one or more nutrients in the diet over an extended period are called deficiency diseases. These can be completely prevented and cured by eating a wholesome balanced diet rich in the missing nutrients.",
+        "simple_explanation": "When your body is missing a specific vitamin or mineral for weeks or months, it starts showing distress signals called deficiency diseases. Eating the right foods acts as natural medicine!",
+        "key_points": [
+          "Protein Deficiency: Kwashiorkor (swollen belly, stunted growth, discolored hair, skin patches).",
+          "Protein & Calorie Deficiency: Marasmus (extreme lean body, ribs prominent, dry loose skin).",
+          "Vitamin A Deficiency: Night Blindness (poor vision in dim light, dry eyes).",
+          "Vitamin B1 Deficiency: Beriberi (weak muscles, low energy, nerve issues).",
+          "Vitamin C Deficiency: Scurvy (bleeding gums, slow healing of wounds).",
+          "Vitamin D & Calcium Deficiency: Rickets in children (soft, bent bones like bowlegs).",
+          "Iodine Deficiency: Goitre (swollen thyroid gland in neck, mental disability in children).",
+          "Iron Deficiency: Anaemia (pale skin, extreme fatigue, weakness due to low hemoglobin)."
+        ],
+        "important_terms": [
+          {
+            "term": "Deficiency Disease",
+            "meaning": "A nutritional disorder resulting from a prolonged deficiency of specific vitamins, minerals, or proteins in the daily diet."
+          },
+          {
+            "term": "Scurvy",
+            "meaning": "A disease caused by lack of Vitamin C characterized by bleeding gums and delayed wound healing."
+          },
+          {
+            "term": "Goitre",
+            "meaning": "An abnormal enlargement of the thyroid gland in the neck caused by chronic Iodine deficiency."
+          },
+          {
+            "term": "Anaemia",
+            "meaning": "A condition in which blood has a deficiency of hemoglobin or red blood cells, commonly caused by lack of dietary iron."
+          }
+        ],
+        "real_life_examples": [
+          "Using iodized salt in cooking has helped eliminate goitre across millions of households in India.",
+          "Eating jaggery (gur) with roasted chickpeas (chana) is a time-tested Indian snack to boost blood iron levels and prevent anaemia."
+        ],
+        "quick_check": [
+          "Which deficiency disease is caused by lack of Vitamin C, and what are its symptoms?",
+          "Name the mineral whose deficiency causes Goitre."
+        ]
+      }
+    },
+    {
+      "topic_id": "C3_T6",
+      "title": "Mindful Eating & Healthy Habits",
+      "source_section": "3.6 Nourishing Body and Mind",
+      "learning_objective": "Adopt mindful eating habits, avoid ultra-processed junk food, and understand gut health.",
+      "lesson": {
+        "concept_explanation": "Mindful eating is the conscious practice of paying full attention to food choices, chewing food thoroughly, recognizing true hunger versus emotional cravings, and appreciating traditional seasonal produce. Avoiding excessive ultra-processed snacks high in refined sugar, saturated fats, and artificial preservatives protects our internal organs and supports lifelong vitality.",
+        "simple_explanation": "Eat slowly, chew well without screens or mobile phones distracting you, and choose fresh colorful foods over packaged chips and sugary sodas!",
+        "key_points": [
+          "Chewing food thoroughly mixes saliva containing amylase enzymes to initiate digestion right in the mouth.",
+          "Eating while watching television or phones leads to overeating because brain satiety signals are ignored.",
+          "Seasonal and local fruits (Guavas, Jamun, Mangoes) offer the highest nutritional value at peak freshness.",
+          "Hydration and cleanliness: Always wash hands before meals and drink safe potable water."
+        ],
+        "important_terms": [
+          {
+            "term": "Mindful Eating",
+            "meaning": "Being fully present and aware of sensations, hunger cues, and nutritional value while consuming food."
+          },
+          {
+            "term": "Ultra-Processed Food",
+            "meaning": "Packaged food products high in added sugars, unhealthy trans-fats, and synthetic additives with low nutritional value."
+          }
+        ],
+        "real_life_examples": [
+          "Chewing a bite of plain roti 20-30 times makes it taste naturally sweet because enzymes in saliva convert starch into maltose sugars.",
+          "Replacing bottled fizzy drinks with fresh lemon water (nimbu pani) or coconut water provides natural electrolytes without excess sugar."
+        ],
+        "quick_check": [
+          "Why does chewing plain roti for a longer time make it taste slightly sweet?",
+          "State two benefits of mindful eating without screen distractions."
+        ]
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "C3_Q01",
+      "topic_id": "C3_T1",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which of the following nutrients provides the body with the highest amount of energy per gram?",
+      "options": ["Carbohydrates", "Fats", "Proteins", "Vitamins"],
+      "answer": "Fats",
+      "explanation": "Fats yield more than twice as much energy (approx 9 kcal/g) compared to carbohydrates and proteins (approx 4 kcal/g).",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q02",
+      "topic_id": "C3_T2",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "What color change indicates the presence of starch when Iodine solution is added to a food sample?",
+      "options": ["Red to Green", "Colorless to Pink", "Yellow-brown to Blue-black", "Blue to White"],
+      "answer": "Yellow-brown to Blue-black",
+      "explanation": "Iodine reacts specifically with starch molecules to form a characteristic deep blue-black complex.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q03",
+      "topic_id": "C3_T2",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Which two chemical reagents are used to test for proteins in food?",
+      "options": [
+        "Iodine and Alcohol",
+        "Copper Sulphate and Caustic Soda",
+        "Hydrochloric acid and Salt",
+        "Lime water and Vinegar"
+      ],
+      "answer": "Copper Sulphate and Caustic Soda",
+      "explanation": "Copper sulphate and caustic soda (Sodium Hydroxide) react with peptide bonds in proteins to produce a violet color.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q04",
+      "topic_id": "C3_T3",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which vitamin is synthesized in our skin when exposed to gentle sunlight?",
+      "options": ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"],
+      "answer": "Vitamin D",
+      "explanation": "Sunlight triggers the synthesis of Vitamin D in human skin, which is crucial for absorbing calcium and building strong bones.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q05",
+      "topic_id": "C3_T5",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Bleeding gums and delayed healing of wounds are classic symptoms of which deficiency disease?",
+      "options": ["Beriberi", "Scurvy", "Rickets", "Goitre"],
+      "answer": "Scurvy",
+      "explanation": "Scurvy is caused by chronic lack of Vitamin C (Ascorbic acid), which is required for healthy connective tissues and collagen.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q06",
+      "topic_id": "C3_T5",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Anaemia is caused by the dietary deficiency of which vital mineral?",
+      "options": ["Calcium", "Iron", "Iodine", "Sodium"],
+      "answer": "Iron",
+      "explanation": "Iron is the essential mineral component of hemoglobin in red blood cells that transports oxygen throughout the body.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q07",
+      "topic_id": "C3_T3",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "The indigestible dietary fibre present in plant foods that prevents constipation is called ________.",
+      "answer": "roughage",
+      "explanation": "Roughage or dietary fibre adds bulk to digestive waste and stimulates healthy intestinal peristalsis.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q08",
+      "topic_id": "C3_T4",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "question": "A diet that contains all essential nutrients in proper quantities along with roughage and water is termed a ________ diet.",
+      "answer": "balanced",
+      "explanation": "A balanced diet fulfills all nutritional needs without deficit or excess.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q09",
+      "topic_id": "C3_T5",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "Swelling of the thyroid gland in the neck region is known as ________.",
+      "answer": "goitre",
+      "explanation": "Goitre results from a chronic deficiency of Iodine in food and drinking water.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q10",
+      "topic_id": "C3_T1",
+      "type": "fill_blank",
+      "difficulty": "easy",
+      "question": "Proteins are commonly called ________ foods because they help in muscle growth and repair.",
+      "answer": "body-building",
+      "explanation": "Proteins build, repair, and maintain muscles and cellular tissues.",
+      "marks": 1
+    },
+    {
+      "id": "C3_Q11",
+      "topic_id": "C3_T1",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Name the three major functional categories of nutrients and give one example of each.",
+      "answer": "1. Energy-giving foods: Carbohydrates (rice/potatoes) and Fats (ghee). 2. Body-building foods: Proteins (pulses/milk). 3. Protective foods: Vitamins and Minerals (fruits/leafy vegetables).",
+      "expected_key_points": [
+        "Energy-giving (Carbohydrates/Fats)",
+        "Body-building (Proteins)",
+        "Protective foods (Vitamins/Minerals)"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "C3_Q12",
+      "topic_id": "C3_T2",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "How would you test whether a given piece of boiled potato contains starch?",
+      "answer": "Take a small sample of boiled potato on a clean porcelain tile. Add 2 to 3 drops of dilute Iodine solution over it. If the color turns deep blue-black, it confirms the presence of starch.",
+      "expected_key_points": [
+        "Add 2-3 drops of dilute Iodine solution",
+        "Observe color change to blue-black",
+        "Conclude presence of starch"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "C3_Q13",
+      "topic_id": "C3_T3",
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Why is water considered essential for human life even though it contains no calories or vitamins?",
+      "answer": "Water dissolves and transports nutrients across body cells, removes waste materials through urine and sweat, and regulates body temperature through evaporation and perspiration.",
+      "expected_key_points": [
+        "Transporting absorbed nutrients to cells",
+        "Excreting metabolic wastes via urine and sweat",
+        "Regulating body temperature"
+      ],
+      "marks": 2
+    },
+    {
+      "id": "C3_Q14",
+      "topic_id": "C3_T4",
+      "type": "subjective",
+      "difficulty": "hard",
+      "question": "Why is repeated washing of peeled and chopped vegetables considered an unhealthy cooking practice?",
+      "answer": "Washing vegetables repeatedly after peeling and chopping leaches out water-soluble vitamins (such as Vitamin B-complex and Vitamin C) and vital minerals into the wash water, which is usually discarded. This severely reduces the nutritional value of the meal before it is even cooked.",
+      "expected_key_points": [
+        "Leaching/dissolving of water-soluble vitamins (Vitamin B & C)",
+        "Loss of essential mineral salts",
+        "Nutrient depletion occurs before cooking"
+      ],
+      "marks": 3
+    },
+    {
+      "id": "C3_Q15",
+      "topic_id": "C3_T5",
+      "type": "subjective",
+      "difficulty": "hard",
+      "question": "What is a deficiency disease? Differentiate between Kwashiorkor and Marasmus in terms of dietary causes and symptoms.",
+      "answer": "A deficiency disease is a medical disorder resulting from the prolonged lack of specific essential nutrients in the daily diet. Kwashiorkor is caused specifically by protein deficiency in young children, presenting with a swollen pot belly, swelling (edema) in limbs, discolored patchy skin, and stunted growth. Marasmus is caused by severe deficiency of BOTH proteins and total calories (energy), resulting in extreme wasting where body fat and muscles disappear and the ribs become prominently visible.",
+      "expected_key_points": [
+        "Definition of deficiency disease as prolonged nutrient deficit",
+        "Kwashiorkor caused by protein deficiency with swollen belly / edema",
+        "Marasmus caused by deficiency of both proteins and calories with severe emaciation and visible ribs"
+      ],
+      "marks": 3
+    }
+  ],
+  "subjective_marking_rubric": {
+    "C3_Q11": {
+      "marks": 2,
+      "criteria": [
+        { "marks": 1, "description": "Lists energy-giving, body-building, and protective categories." },
+        { "marks": 1, "description": "Provides accurate food examples for each category." }
+      ]
+    },
+    "C3_Q12": {
+      "marks": 2,
+      "criteria": [
+        { "marks": 1, "description": "Names dilute Iodine solution." },
+        { "marks": 1, "description": "Identifies blue-black color change confirming starch." }
+      ]
+    },
+    "C3_Q13": {
+      "marks": 2,
+      "criteria": [
+        { "marks": 1, "description": "Mentions nutrient transport or waste elimination." },
+        { "marks": 1, "description": "Mentions body temperature regulation." }
+      ]
+    },
+    "C3_Q14": {
+      "marks": 3,
+      "criteria": [
+        { "marks": 1, "description": "Identifies that water-soluble vitamins (B and C) dissolve in wash water." },
+        { "marks": 1, "description": "Mentions loss of dissolved mineral salts." },
+        { "marks": 1, "description": "Explains the impact on nutritional quality." }
+      ]
+    },
+    "C3_Q15": {
+      "marks": 3,
+      "criteria": [
+        { "marks": 1, "description": "Defines deficiency disease." },
+        { "marks": 1, "description": "Explains Kwashiorkor cause (protein) and symptoms (swollen belly/edema)." },
+        { "marks": 1, "description": "Explains Marasmus cause (protein + calories) and symptoms (extreme wasting/visible ribs)." }
+      ]
+    }
+  },
+  "exam_blueprints": [
+    {
+      "exam_id": "CH3_PRACTICE_QUIZ",
+      "title": "Chapter 3 Practice Quiz",
+      "questions": 5,
+      "suggested_selection": ["C3_Q01", "C3_Q02", "C3_Q04", "C3_Q07", "C3_Q08"],
+      "total_marks": 5,
+      "feedback_mode": "Immediate",
+      "note": "5-question interactive practice check with instant answers and explanations."
+    },
+    {
+      "exam_id": "CH3_CHAPTER_TEST",
+      "title": "Chapter 3 Summative Assessment",
+      "questions": 15,
+      "suggested_selection": [
+        "C3_Q01", "C3_Q02", "C3_Q03", "C3_Q04", "C3_Q05", "C3_Q06",
+        "C3_Q07", "C3_Q08", "C3_Q09", "C3_Q10",
+        "C3_Q11", "C3_Q12", "C3_Q13",
+        "C3_Q14", "C3_Q15"
+      ],
+      "total_marks": 20,
+      "feedback_mode": "After submission",
+      "note": "Comprehensive 15-question Chapter 3 exam testing nutrients, lab tests, balanced diets, and deficiency disorders."
+    }
+  ],
+  "ai_tutor_system_prompt": "You are 'Science Buddy', a friendly, encouraging AI tutor specialized in NCERT Class 6 CBSE Science Chapter 3: 'Mindful Eating: A Path to a Healthy Body'. Explain food nutrients, lab tests (iodine for starch, copper sulphate for protein), balanced diets, and deficiency diseases using familiar Indian foods (dal, roti, amla, jaggery) for 11-12 year old students.",
+  "subjective_evaluation_prompt": "Evaluate Class 6 CBSE student answers for Chapter 3 'Mindful Eating' based on scientific accuracy, correct nutritional terminology (starch, roughage, balanced diet, kwashiorkor, scurvy, anaemia), and logical explanations."
+}

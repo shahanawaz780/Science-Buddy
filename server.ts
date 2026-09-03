@@ -5,6 +5,7 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
+import { buildTutorContextualSystem, generateRuleBasedReply as generateModularRuleBasedReply } from "./src/server/tutorLogic";
 
 dotenv.config();
 
@@ -56,6 +57,20 @@ function getChapter1Json() {
   return null;
 }
 
+// Helper to load Chapter 2 Content Pack JSON safely
+function getChapter2Json() {
+  try {
+    const jsonPath = path.join(process.cwd(), "src", "data", "chapters", "chapter_2_diversity.json");
+    if (fs.existsSync(jsonPath)) {
+      const raw = fs.readFileSync(jsonPath, "utf-8");
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    console.warn("Could not read chapter_2_diversity.json from disk:", e);
+  }
+  return null;
+}
+
 // Initialize Google GenAI client lazily if key exists
 let aiClient: GoogleGenAI | null = null;
 function getAIClient(): GoogleGenAI | null {
@@ -82,11 +97,10 @@ async function generateTutorResponse(
   systemInstruction: string
 ): Promise<string> {
   const candidateModels = [
-    "gemini-3.6-flash",
-    "gemini-3.7-flash",
-    "gemini-3.5-flash-lite",
+    "gemini-3.8-flash",
+    "gemini-flash-latest",
     "gemini-3.1-flash-lite",
-    "gemini-flash-latest"
+    "gemini-3.1-pro-preview"
   ];
 
   let lastError: any = null;
@@ -228,9 +242,161 @@ Whenever explaining or teaching, format your response clearly using these sectio
 Keep responses concise and age appropriate.
 Never encourage cheating in an examination.`;
 
-// Fallback smart responses tailored strictly for Class 6 CBSE Curiosity Chapter 1
-function generateRuleBasedReply(lastMessage: string, promptType?: string, studentContext?: any): string {
+const CHAPTER_2_KNOWLEDGE = `
+CHAPTER 2: DIVERSITY IN THE LIVING WORLD (NCERT Class 6 Curiosity)
+1. Diversity of Plants:
+- Herbs: Small plants with green, tender, non-woody stems (e.g. mint, coriander, tomato, wheat, spinach).
+- Shrubs: Medium height with hard, woody stems branching close to the ground (e.g. rose, lemon, hibiscus, tulsi, cotton).
+- Trees: Tall plants with a single thick, woody trunk with branches higher up (e.g. mango, banyan, neem, peepal, teak).
+- Climbers: Weak stems needing external support like sticks or walls to climb upright (e.g. money plant, pea, grapevine).
+- Creepers: Weak stems that spread horizontally across the ground (e.g. watermelon, pumpkin, strawberry).
+
+2. Plant Parts & Venation-Root Relationship:
+- Reticulate Venation: Net-like web pattern of veins (e.g. peepal, mango, gram, mustard, rose) ➔ Paired with TAPROOT systems and DICOT seeds (2 cotyledons).
+- Parallel Venation: Veins running parallel to each other (e.g. grass, wheat, maize, banana, bamboo) ➔ Paired with FIBROUS ROOT systems and MONOCOT seeds (1 cotyledon).
+- Taproot: A single main primary root growing deep vertically, with smaller lateral roots.
+- Fibrous Root: A cluster of similar-sized roots spreading out from the base of the stem.
+
+3. Seed Structure & Germination:
+- Seed coat: Protective outer covering.
+- Cotyledon(s): Food store for developing embryo (1 in monocots, 2 in dicots).
+- Embryo: Developing baby plant comprising radicle (becomes root) and plumule (becomes shoot).
+- Germination Requirements: Moisture (water), Air (oxygen), and Warmth (suitable temperature). Soil and light are not required for initial sprouting.
+
+4. Animal Adaptations & Habitats:
+- Aquatic (Pond, River, Ocean): Streamlined body shape to reduce water resistance, fins for swimming, gills to absorb dissolved oxygen (e.g. fish, frog in water).
+- Desert (Hot, Dry): Water conservation, long eyelashes to keep out sand, wide padded feet to walk on soft sand, concentrated urine (e.g. camel).
+- Mountain / Polar (Cold, Snow): Thick fur, layer of subcutaneous fat (blubber), strong hooves for steep rocky slopes (e.g. yak, snow leopard, mountain goat).
+- Terrestrial (Forest, Grasslands): Sharp teeth and claws for carnivores, eyes on side of head for herbivores to spot predators.
+
+5. Characteristics of Living Beings:
+- Require food/nutrition for energy, repair, and growth.
+- Growth (increase in size, height, and complexity).
+- Respiration (intake of oxygen and release of energy from digested food).
+- Response to Stimuli (reacting to changes in external environment, e.g. Mimosa pudica closing leaves when touched).
+- Excretion (removal of toxic metabolic wastes from the body).
+- Reproduction (producing offspring of their own kind).
+- Definite life cycle and eventual death.
+`;
+
+const SYSTEM_INSTRUCTION_CH2 = `You are "Science Buddy", an AI Science Tutor for Class 6 CBSE students.
+
+STUDENT PROFILE:
+Age: approximately 11–12
+Grade: 6
+Board: CBSE
+Subject: Science
+Current chapter: Diversity in the Living World (Textbook: Curiosity, Chapter 2)
+
+APPROVED CHAPTER 2 KNOWLEDGE BASE:
+${CHAPTER_2_KNOWLEDGE}
+
+KNOWLEDGE RULE:
+- Use the approved Chapter 2 content supplied above as the primary knowledge source.
+- Do not invent textbook content.
+- Do not introduce college/advanced biology terms outside Class 6.
+- If the answer cannot be confidently supported by the supplied Chapter 2 content, tell the student that the information is not available in this chapter.
+
+TEACHING STYLE:
+- Use simple language.
+- Explain difficult concepts step by step.
+- Use everyday nature examples (garden plants, kitchen seeds, common animals, zoo observations).
+- Encourage curiosity about nature and biodiversity.
+- Ask short follow-up questions.
+- When explaining or teaching, format your response clearly using these sections:
+
+💡 Simple explanation
+[Clear, step-by-step simple explanation for 11–12 year old]
+
+🔍 Example
+[Relatable nature, garden, seed, or animal example]
+
+⭐ Remember
+[Core takeaway or key concept to keep in mind]
+
+🎯 Quick check
+[One short, engaging check question to test understanding]
+
+Keep responses concise and age appropriate.
+Never encourage cheating in an examination.`;
+
+// Fallback smart responses tailored for Class 6 CBSE Curiosity Chapters 1 & 2
+function generateRuleBasedReply(lastMessage: string, promptType?: string, studentContext?: any, chapterId?: string): string {
   const lastMsg = (lastMessage || "").toLowerCase().trim();
+  const isCh2 = chapterId === 'chapter-2' || chapterId === '2' || lastMsg.includes('diversity') || lastMsg.includes('taproot') || lastMsg.includes('fibrous') || lastMsg.includes('monocot') || lastMsg.includes('dicot') || lastMsg.includes('venation') || lastMsg.includes('cotyledon') || lastMsg.includes('germination') || lastMsg.includes('streamlined') || lastMsg.includes('habitat');
+
+  if (isCh2) {
+    if (promptType === "PRACTICE" || lastMsg.includes("practice")) {
+      return `💡 **Simple explanation**
+Let's practice classifying plant leaves, roots, and seed types from Chapter 2!
+
+🔍 **Example Practice Challenge: Grass vs. Mustard Plant**
+* **Grass:** Has parallel venation in its leaves, fibrous roots underground, and a single cotyledon (monocot) in its seed.
+* **Mustard / Bean:** Has reticulate (net-like) venation, a prominent central taproot with lateral rootlets, and two cotyledons (dicot).
+
+⭐ **Remember**
+Leaf venation directly reveals root type without needing to uproot the plant! Parallel venation = Fibrous roots; Reticulate venation = Taproot.
+
+🎯 **Quick check**
+If you observe a leaf with net-like reticulate venation, what kind of root system will the plant have?`;
+    }
+
+    if (promptType === "HINT" || lastMsg.includes("hint") || promptType === "Give hint") {
+      return `💡 **Hint for Chapter 2:**
+Look at how veins run in the leaf!
+* If veins run parallel side-by-side (like grass, wheat, or banana) ➔ it has fibrous roots and 1 cotyledon.
+* If veins form a web/mesh network (like peepal, mango, or gram) ➔ it has a deep taproot and 2 cotyledons.
+
+⭐ **Remember**
+This amazing connection allows you to identify root types without damaging plants!
+
+🎯 **Quick check**
+Does a maize (corn) plant have taproots or fibrous roots?`;
+    }
+
+    if (promptType === "QUIZ" || lastMsg.includes("quiz") || promptType === "Quiz") {
+      return `🎯 **Quick Chapter 2 Science Quiz!**
+
+**Question:** Which of the following conditions are strictly necessary for a bean seed to successfully germinate?
+
+A) Only soil and fertilizer
+B) Water (moisture), air (oxygen), and warmth
+C) Only continuous darkness
+D) Only ice-cold water
+
+Reply with your answer letter! 🌱`;
+    }
+
+    if (promptType === "EXAMPLE" || lastMsg.includes("example") || promptType === "Give example") {
+      return `💡 **Simple explanation**
+Animals have special body features called adaptations that help them survive in their specific habitats.
+
+🔍 **Example: Desert vs Aquatic Adaptations**
+* **Camel in Desert:** Has long eyelashes to keep out sand, wide padded feet to walk on soft hot sand, and conserves water with very little concentrated urine.
+* **Fish in Water:** Has a streamlined, spindle-shaped body to glide through water with minimal resistance, fins to balance, and gills to absorb dissolved oxygen.
+
+⭐ **Remember**
+Adaptations develop over generations to match an organism's environmental conditions.
+
+🎯 **Quick check**
+Why do fish have a streamlined body shape?`;
+    }
+
+    // Default Chapter 2 response
+    return `💡 **Simple explanation**
+Chapter 2: **Diversity in the Living World** explores the wonderful variety of plants and animals, how they adapt to their habitats, and the characteristics that define living beings.
+
+🔍 **Example**
+* **Plants:** Classified by height and stem into herbs (soft green stems), shrubs (woody branches near ground), and trees (tall, thick brown trunk).
+* **Roots & Leaves:** Reticulate venation corresponds to taproots (dicot), while parallel venation corresponds to fibrous roots (monocot).
+* **Habitats:** Camels in deserts, fish in rivers, and yaks on cold mountains show distinct survival adaptations.
+
+⭐ **Remember**
+All living organisms grow, respire, respond to stimuli, reproduce, excrete, and require nutrition.
+
+🎯 **Quick check**
+Name one plant that shows reticulate venation and has a taproot system!`;
+    }
 
   // Check if related to Chapter 1
   const isChapter1Related = /science|curious|curiosity|jigsaw|puzzle|method|observation|observe|question|hypothesis|hypothesiz|experiment|test|analys|conclus|bicycle|tube|bubble|leak|milk|cooker|pressure|steam|phototropism|plant|sunlight|theme|living world|seed|germination|food|nutrition|material|state|mixture|physical world|magnet|motion|beyond earth|solar system|astronomy|collaborat|classmate|teacher|family|why|how|what|practice|hint|quiz|reteach|explain/i.test(lastMsg);
@@ -406,7 +572,17 @@ Which of the 5 steps in the Scientific Method involves gathering evidence throug
 // API endpoint for AI Tutor Chat
 app.post("/api/gemini/tutor", async (req, res) => {
   try {
-    const { messages, topicContext, promptType, studentContext } = req.body;
+    const { 
+      messages, 
+      topicContext, 
+      promptType, 
+      studentContext, 
+      chapterContext, 
+      chapterId, 
+      chapterNumber, 
+      chapterTitle, 
+      currentTopic 
+    } = req.body;
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({ error: "Messages array is required." });
@@ -414,44 +590,17 @@ app.post("/api/gemini/tutor", async (req, res) => {
 
     const lastUserMessage = messages[messages.length - 1].content || "";
 
+    const tutorContext = buildTutorContextualSystem({
+      chapterId,
+      chapterNumber,
+      chapterTitle,
+      topicContext,
+      promptType,
+      studentContext,
+      currentTopic
+    });
+
     const ai = getAIClient();
-
-    // Contextual prefix if topic is selected
-    let contextualSystem = SYSTEM_INSTRUCTION;
-    if (topicContext) {
-      contextualSystem += `\n\nActive Chapter 1 Topic Context: ${topicContext}`;
-    }
-    if (promptType) {
-      contextualSystem += `\nThe student clicked the quick prompt action: "${promptType}". Tailor your response strictly to this request style (EXPLAIN, PRACTICE, QUIZ, HINT, RETEACH, CHECK ANSWER).`;
-    }
-
-    // Add student personalized context if available
-    if (studentContext) {
-      let studentContextText = `\n\n--- STUDENT LEARNING CONTEXT (STRICTLY CONFIDENTIAL FOR ADAPTIVE TEACHING) ---`;
-      if (studentContext.primaryWeakSkill || studentContext.primaryWeakTopicTitle) {
-        studentContextText += `\nTarget Focus Skill: ${studentContext.primaryWeakSkill || 'Scientific Method'} (Topic: ${studentContext.primaryWeakTopicTitle || 'How Do Scientists Work?'})`;
-      }
-      if (studentContext.recentIncorrectAnswers && studentContext.recentIncorrectAnswers.length > 0) {
-        studentContextText += `\nRecent Question Misconceptions:`;
-        studentContext.recentIncorrectAnswers.forEach((q: any, i: number) => {
-          studentContextText += `\n  ${i + 1}. Question: "${q.question}" | Student wrote: "${q.studentAnswer || '(unanswered)'}" | Correct concept: "${q.correctAnswer}"`;
-        });
-      }
-      if (studentContext.completedLessons && studentContext.completedLessons.length > 0) {
-        studentContextText += `\nCompleted Lessons: ${studentContext.completedLessons.join(', ')}`;
-      }
-
-      studentContextText += `\n\nADAPTATION INSTRUCTIONS:
-1. Adapt your explanation to directly resolve any confusion or misconception indicated above.
-2. If the student has had confusion between Hypothesizing (making an educated testable guess) and Testing/Experimentation (conducting the experiment to gather evidence), clearly emphasize and contrast their difference using a simple everyday example (e.g. noticing bicycle tube puncture or kitchen boiling).
-3. PRIVACY & SAFETY GUARDRAILS:
-   - NEVER reveal internal analytics, database IDs, accuracy percentages, or raw test scores to the child.
-   - NEVER mention hidden scoring logic, algorithms, or grading formulas.
-   - Maintain a cheerful, encouraging, Class 6 age-appropriate tone.
-   - Strictly stay bounded by NCERT Chapter 1 "The Wonderful World of Science".`;
-
-      contextualSystem += studentContextText;
-    }
 
     if (ai) {
       try {
@@ -468,22 +617,34 @@ app.post("/api/gemini/tutor", async (req, res) => {
         const replyText = await generateTutorResponse(
           ai,
           fullPrompt,
-          contextualSystem
+          tutorContext.systemInstruction
         );
 
         return res.json({
           reply:
             replyText ||
-            "I am here to help you learn Science! What would you like to explore next in Chapter 1: The Wonderful World of Science?",
+            `I am here to help you learn Science! What would you like to explore next in Chapter ${tutorContext.activeChapterNumber}: ${tutorContext.activeChapterTitle}?`,
         });
       } catch (geminiError: any) {
         console.warn("Gemini API error (e.g. 503 high demand or model unavailable):", geminiError?.message || geminiError);
         // Seamlessly serve grounded CBSE Class 6 response so user is never interrupted by 503/500 errors
-        const fallbackReply = generateRuleBasedReply(lastUserMessage, promptType, studentContext);
+        const fallbackReply = generateModularRuleBasedReply(
+          lastUserMessage, 
+          promptType, 
+          studentContext, 
+          tutorContext.currentChapterKey, 
+          currentTopic
+        );
         return res.json({ reply: fallbackReply });
       }
     } else {
-      const fallbackReply = generateRuleBasedReply(lastUserMessage, promptType, studentContext);
+      const fallbackReply = generateModularRuleBasedReply(
+        lastUserMessage, 
+        promptType, 
+        studentContext, 
+        tutorContext.currentChapterKey, 
+        currentTopic
+      );
       return res.json({ reply: fallbackReply });
     }
   } catch (error: any) {
@@ -493,7 +654,15 @@ app.post("/api/gemini/tutor", async (req, res) => {
       : "";
     const promptType = req.body?.promptType;
     const studentContext = req.body?.studentContext;
-    const fallbackReply = generateRuleBasedReply(lastUserMessage, promptType, studentContext);
+    const chId = req.body?.chapterId;
+    const currentTopic = req.body?.currentTopic;
+    const fallbackReply = generateModularRuleBasedReply(
+      lastUserMessage, 
+      promptType, 
+      studentContext, 
+      chId || 'chapter-1', 
+      currentTopic
+    );
     return res.json({ reply: fallbackReply });
   }
 });
@@ -509,11 +678,10 @@ async function evaluateSubjectiveWithGemini(
   maxMarks: number = 2
 ) {
   const candidateModels = [
-    "gemini-3.6-flash",
-    "gemini-3.7-flash",
-    "gemini-3.5-flash-lite",
+    "gemini-3.8-flash",
+    "gemini-flash-latest",
     "gemini-3.1-flash-lite",
-    "gemini-flash-latest"
+    "gemini-3.1-pro-preview"
   ];
 
   // Format criteria text from markingCriteria if present
@@ -857,6 +1025,8 @@ app.post("/api/gemini/evaluate-batch-subjective", async (req, res) => {
 async function generateAIRecommendationsWithGemini(
   ai: any,
   performanceData: {
+    chapterId?: string;
+    chapterTitle?: string;
     topicScores?: Array<{ topicTitle?: string; topicId?: string; accuracy?: number; scoreDisplay?: string; attempts?: number }>;
     quizScores?: Array<{ quizTitle?: string; percentage?: number; score?: number; totalMarks?: number }>;
     testScores?: Array<{ testTitle?: string; percentage?: number; score?: number; totalMarks?: number }>;
@@ -866,37 +1036,36 @@ async function generateAIRecommendationsWithGemini(
   }
 ) {
   const candidateModels = [
-    "gemini-3.6-flash",
-    "gemini-3.7-flash",
-    "gemini-3.5-flash-lite",
+    "gemini-3.8-flash",
+    "gemini-flash-latest",
     "gemini-3.1-flash-lite",
-    "gemini-flash-latest"
+    "gemini-3.1-pro-preview"
   ];
 
-  const systemInstruction = `You are "Science Buddy AI Learning Mentor", a CBSE Class 6 Science expert specializing in Chapter 1: "The Wonderful World of Science" (NCERT Textbook: Curiosity).
+  const isCh2 = performanceData.chapterId === 'chapter-2' || performanceData.chapterId === '2' || 
+    (typeof performanceData.chapterTitle === 'string' && performanceData.chapterTitle.includes("Diversity")) ||
+    (Array.isArray(performanceData.topicScores) && performanceData.topicScores.some(t => (t.topicId && t.topicId.startsWith("C2_")) || (t.topicTitle && (t.topicTitle.includes("Plant") || t.topicTitle.includes("Diversity")))));
 
-APPROVED CHAPTER 1 CURRICULUM:
-${CHAPTER_1_CURRICULUM}
+  const activeChapterTitle = isCh2 ? "Chapter 2: Diversity in the Living World" : "Chapter 1: The Wonderful World of Science";
+  const activeCurriculum = isCh2 ? CHAPTER_2_KNOWLEDGE : CHAPTER_1_CURRICULUM;
+
+  const systemInstruction = `You are "Science Buddy AI Learning Mentor", a CBSE Class 6 Science expert specializing in ${activeChapterTitle} (NCERT Textbook: Curiosity).
+
+APPROVED CURRICULUM:
+${activeCurriculum}
 
 YOUR TASK:
-Analyze the student's actual performance data for Chapter 1 and provide a personalized learning recommendation.
+Analyze the student's actual performance data for ${activeChapterTitle} and provide a personalized learning recommendation.
 
 RULES & CONSTRAINTS:
 1. Grounded strictly in actual performance data:
    - Identify the student's genuine strongest area based on their highest accuracy or score.
    - Identify the student's genuine weakest area based on lowest accuracy, missed questions, or low scores.
-   - Recommend a specific Chapter 1 topic/lesson to study or review next.
-   - Recommend a targeted, actionable practice activity (e.g. reviewing specific 5 steps of the scientific method, practicing everyday examples, or attempting a practice quiz).
+   - Recommend a specific topic/lesson from ${activeChapterTitle} to study or review next.
+   - Recommend a targeted, actionable practice activity.
    - Give a clear, encouraging diagnostic reason citing their specific performance patterns.
 2. STRICT KNOWLEDGE CONSTRAINT:
-   - ONLY recommend topics and concepts from Chapter 1 ("The Wonderful World of Science"). Do NOT mention topics or chapters outside Chapter 1.
-   - Valid Chapter 1 Topics:
-     * Welcome to the World of Science (Curiosity, Observation)
-     * Science as an Unending Jigsaw Puzzle
-     * How Do Scientists Work? (The 5 Steps of the Scientific Method: Observation, Questioning, Hypothesizing, Testing, Analysis)
-     * Everyday Examples of Scientific Thinking (Kitchen, Bicycle, Plants)
-     * Overview of Themes in Grade 6 Science (Living World, Food, Materials, Physical World, Beyond Earth)
-     * Collaboration in Science (Teamwork, Discussing hypotheses)
+   - ONLY recommend topics and concepts from ${activeChapterTitle}. Do NOT recommend topics from other chapters.
 3. TONE & LENGTH:
    - Friendly, encouraging, and age-appropriate for an 11-12 year old student.
    - Keep each text field short, concise, and focused.
@@ -907,7 +1076,7 @@ STRICT JSON OUTPUT FORMAT ONLY (Pure JSON, no extra markdown):
   "summary": "<Short, encouraging 1-2 sentence overall performance summary>",
   "strong_area": "<Name of the strongest topic or concept>",
   "weak_area": "<Name of the topic or concept needing most improvement>",
-  "recommended_topic": "<Specific Chapter 1 topic title>",
+  "recommended_topic": "<Specific topic title from ${activeChapterTitle}>",
   "recommended_action": "<Specific actionable study or practice activity>",
   "reason": "<Diagnostic reason based on their actual answers or scores>"
 }`;
@@ -933,7 +1102,7 @@ STRICT JSON OUTPUT FORMAT ONLY (Pure JSON, no extra markdown):
     `- Topic: ${q.topicTitle || "General"} | Question: "${q.question || ""}" | Missed Answer: "${q.studentAnswer || "(unanswered)"}" | Correct Concept: "${q.correctAnswer || ""}"`
   ).join("\n") || "No recent incorrect questions.";
 
-  const prompt = `STUDENT CHAPTER 1 PERFORMANCE DATA:
+  const prompt = `STUDENT ${isCh2 ? 'CHAPTER 2' : 'CHAPTER 1'} PERFORMANCE DATA (${activeChapterTitle}):
 
 TOPIC SCORES:
 ${formattedTopicScores}
@@ -951,7 +1120,7 @@ INCORRECT QUESTIONS & CONCEPT GAPS:
 ${formattedIncorrectQuestions}
 
 RECENT ACTIVITY:
-${performanceData.recentActivity || "Reviewed Chapter 1 topics and attempted assessments."}
+${performanceData.recentActivity || `Reviewed ${activeChapterTitle} topics and attempted assessments.`}
 
 Please generate the personalized AI recommendation JSON based strictly on this actual performance data.`;
 
@@ -975,12 +1144,12 @@ Please generate the personalized AI recommendation JSON based strictly on this a
           const parsed = JSON.parse(cleaned);
 
           return {
-            summary: typeof parsed.summary === 'string' && parsed.summary.trim() ? parsed.summary.trim() : "You are making steady progress in Chapter 1.",
-            strong_area: typeof parsed.strong_area === 'string' && parsed.strong_area.trim() ? parsed.strong_area.trim() : "Welcome to the World of Science",
-            weak_area: typeof parsed.weak_area === 'string' && parsed.weak_area.trim() ? parsed.weak_area.trim() : "How Do Scientists Work?",
-            recommended_topic: typeof parsed.recommended_topic === 'string' && parsed.recommended_topic.trim() ? parsed.recommended_topic.trim() : "How Do Scientists Work?",
-            recommended_action: typeof parsed.recommended_action === 'string' && parsed.recommended_action.trim() ? parsed.recommended_action.trim() : "Review the five steps and attempt the practice quiz.",
-            reason: typeof parsed.reason === 'string' && parsed.reason.trim() ? parsed.reason.trim() : "Based on your latest assessment, focusing on this topic will help you master all Chapter 1 concepts."
+            summary: typeof parsed.summary === 'string' && parsed.summary.trim() ? parsed.summary.trim() : `You are making steady progress in ${activeChapterTitle}.`,
+            strong_area: typeof parsed.strong_area === 'string' && parsed.strong_area.trim() ? parsed.strong_area.trim() : (isCh2 ? "Diversity of Plants Around Us" : "Welcome to the World of Science"),
+            weak_area: typeof parsed.weak_area === 'string' && parsed.weak_area.trim() ? parsed.weak_area.trim() : (isCh2 ? "Plant Structure - Roots and Leaves" : "How Do Scientists Work?"),
+            recommended_topic: typeof parsed.recommended_topic === 'string' && parsed.recommended_topic.trim() ? parsed.recommended_topic.trim() : (isCh2 ? "Plant Structure - Roots and Leaves" : "How Do Scientists Work?"),
+            recommended_action: typeof parsed.recommended_action === 'string' && parsed.recommended_action.trim() ? parsed.recommended_action.trim() : (isCh2 ? "Review the connection between leaf venation and root systems, then attempt the practice quiz." : "Review the five steps and attempt the practice quiz."),
+            reason: typeof parsed.reason === 'string' && parsed.reason.trim() ? parsed.reason.trim() : `Based on your latest assessment, focusing on this topic will help you master all ${activeChapterTitle} concepts.`
           };
         }
       } catch (err: any) {
@@ -1003,14 +1172,26 @@ Please generate the personalized AI recommendation JSON based strictly on this a
 }
 
 function generateRuleBasedRecommendations(performanceData: any) {
+  const isCh2 = performanceData.chapterId === 'chapter-2' || performanceData.chapterId === '2' || 
+    (typeof performanceData.chapterTitle === 'string' && performanceData.chapterTitle.includes("Diversity")) ||
+    (Array.isArray(performanceData.topicScores) && performanceData.topicScores.some((t: any) => (t.topicId && t.topicId.startsWith("C2_")) || (t.topicTitle && (t.topicTitle.includes("Plant") || t.topicTitle.includes("Diversity")))));
+
+  const activeChapterTitle = isCh2 ? "Chapter 2: Diversity in the Living World" : "Chapter 1: The Wonderful World of Science";
   const topics = Array.isArray(performanceData.topicScores) ? performanceData.topicScores : [];
   const incorrect = Array.isArray(performanceData.incorrectQuestions) ? performanceData.incorrectQuestions : [];
 
   // Sort topics by accuracy ascending
   const sortedByAccuracy = [...topics].sort((a, b) => (a.accuracy ?? 50) - (b.accuracy ?? 50));
   
-  const weakest = sortedByAccuracy[0] || { topicTitle: "How Do Scientists Work?", accuracy: 50 };
-  const strongest = sortedByAccuracy[sortedByAccuracy.length - 1] || { topicTitle: "Welcome to the World of Science", accuracy: 90 };
+  const defaultWeak = isCh2 
+    ? { topicTitle: "Plant Structure - Types of Roots and Leaf Venation", accuracy: 50 }
+    : { topicTitle: "How Do Scientists Work?", accuracy: 50 };
+  const defaultStrong = isCh2
+    ? { topicTitle: "Diversity of Plants Around Us", accuracy: 90 }
+    : { topicTitle: "Welcome to the World of Science", accuracy: 90 };
+
+  const weakest = sortedByAccuracy[0] || defaultWeak;
+  const strongest = sortedByAccuracy[sortedByAccuracy.length - 1] || defaultStrong;
 
   const hasIncorrect = incorrect.length > 0;
   const incorrectTopic = hasIncorrect ? (incorrect[0].topicTitle || weakest.topicTitle) : weakest.topicTitle;
@@ -1020,11 +1201,13 @@ function generateRuleBasedRecommendations(performanceData: any) {
     : 75;
 
   return {
-    summary: `You are doing well overall with an average accuracy of ${avgAcc}% in Chapter 1.`,
-    strong_area: strongest.topicTitle || "Collaboration in Science",
-    weak_area: weakest.topicTitle || "How Do Scientists Work?",
-    recommended_topic: weakest.topicTitle || "How Do Scientists Work?",
-    recommended_action: `Review key concepts in "${weakest.topicTitle || 'How Do Scientists Work?'}" and attempt the practice quiz.`,
+    summary: `You are doing well overall with an average accuracy of ${avgAcc}% in ${activeChapterTitle}.`,
+    strong_area: strongest.topicTitle || defaultStrong.topicTitle,
+    weak_area: weakest.topicTitle || defaultWeak.topicTitle,
+    recommended_topic: weakest.topicTitle || defaultWeak.topicTitle,
+    recommended_action: isCh2 
+      ? `Review the key concepts in "${weakest.topicTitle}" and check the relationship between leaf venation and root types.`
+      : `Review key concepts in "${weakest.topicTitle || 'How Do Scientists Work?'}" and attempt the practice quiz.`,
     reason: hasIncorrect 
       ? `Your recent answers show difficulty with concepts in ${incorrectTopic}. Reviewing this topic will boost your confidence and test scores.`
       : `Your performance in ${weakest.topicTitle} is currently at ${weakest.accuracy || 50}%, which has the highest opportunity for rapid score improvement.`
@@ -1040,10 +1223,16 @@ app.post("/api/gemini/recommendations", async (req, res) => {
       testScores, 
       completedTopics, 
       incorrectQuestions, 
-      recentActivity 
+      recentActivity,
+      chapter_id,
+      chapterId,
+      chapter_title,
+      chapterTitle
     } = req.body || {};
 
     const performancePayload = {
+      chapterId: chapter_id || chapterId,
+      chapterTitle: chapter_title || chapterTitle,
       topicScores: Array.isArray(topicScores) ? topicScores : [],
       quizScores: Array.isArray(quizScores) ? quizScores : [],
       testScores: Array.isArray(testScores) ? testScores : [],
@@ -1130,30 +1319,37 @@ app.get("/api/supabase/status", async (req, res) => {
   }
 });
 
-// Helper to normalize chapter IDs ('ch1', '1', 'curiosity-ch1' -> 'chapter-1')
+// Helper to normalize chapter IDs ('ch1', '1', 'curiosity-ch1' -> 'chapter-1', 'ch2', '2' -> 'chapter-2')
 function normalizeChapterId(chId?: string): string {
   if (!chId) return "chapter-1";
   const str = String(chId).trim().toLowerCase();
-  if (str === "1" || str === "ch1" || str === "ch-1" || str === "curiosity-ch1") {
+  if (str === "2" || str === "ch2" || str === "ch-2" || str === "chapter-2" || str.includes("diversity")) {
+    return "chapter-2";
+  }
+  if (str === "1" || str === "ch1" || str === "ch-1" || str === "curiosity-ch1" || str === "chapter-1") {
     return "chapter-1";
   }
   return chId;
 }
 
-// Find existing chapter in Supabase or upsert Chapter 1 safely
+// Find existing chapter in Supabase or upsert Chapter 1 / Chapter 2 safely
 async function getOrEnsureChapterId(
   client: SupabaseClient, 
   requestedChapterId: string = "chapter-1"
 ): Promise<string> {
   const chapter1 = getChapter1Json();
+  const chapter2 = getChapter2Json();
   const normalizedRequested = normalizeChapterId(requestedChapterId);
+  const isCh2 = normalizedRequested === "chapter-2";
+  const selectedPack = isCh2 ? (chapter2 || chapter1) : chapter1;
+  const targetChapterNumber = isCh2 ? 2 : 1;
 
   try {
     // 1. Query existing chapters to detect the exact ID stored in the database
     const { data: existingChapters, error: selectErr } = await client
       .from("chapters")
       .select("id, chapter_number, title")
-      .limit(10);
+      .limit(20);
 
     if (!selectErr && existingChapters && existingChapters.length > 0) {
       // Direct exact match
@@ -1161,29 +1357,25 @@ async function getOrEnsureChapterId(
       if (exactMatch) {
         return exactMatch.id;
       }
-      // Match by chapter number 1
-      const ch1Match = existingChapters.find(c => Number(c.chapter_number) === 1);
-      if (ch1Match) {
-        return ch1Match.id;
-      }
-      // If there's only 1 chapter in table, use it
-      if (existingChapters.length === 1) {
-        return existingChapters[0].id;
+      // Match by chapter number
+      const chMatch = existingChapters.find(c => Number(c.chapter_number) === targetChapterNumber);
+      if (chMatch) {
+        return chMatch.id;
       }
     }
   } catch (e: any) {
     console.warn("Could not query existing chapters:", e?.message);
   }
 
-  // 2. If chapter does not exist, insert normalized ID ('chapter-1')
+  // 2. If chapter does not exist, insert normalized ID ('chapter-1' or 'chapter-2')
   const targetId = normalizedRequested;
   try {
     const insertPayload = {
       id: targetId,
-      grade: chapter1?.metadata?.grade || 6,
-      subject: chapter1?.metadata?.subject || "Science",
-      chapter_number: chapter1?.metadata?.chapter_number || 1,
-      title: chapter1?.metadata?.chapter_title || "The Wonderful World of Science",
+      grade: selectedPack?.metadata?.grade || 6,
+      subject: selectedPack?.metadata?.subject || "Science",
+      chapter_number: selectedPack?.metadata?.chapter_number || targetChapterNumber,
+      title: selectedPack?.metadata?.chapter_title || (isCh2 ? "Diversity in the Living World" : "The Wonderful World of Science"),
       created_at: new Date().toISOString()
     };
 
@@ -1210,6 +1402,7 @@ async function ensureSchemaEntities(
   topicId?: string
 ): Promise<{ effectiveChapterId: string; effectiveTopicId?: string }> {
   const chapter1 = getChapter1Json();
+  const chapter2 = getChapter2Json();
   
   // 1. Resolve and ensure chapter in database
   const effectiveChapterId = await getOrEnsureChapterId(client, chapterId);
@@ -1219,8 +1412,8 @@ async function ensureSchemaEntities(
     const { error: studentErr } = await client.from("students").upsert({
       id: studentId,
       name: studentName || "Student",
-      grade: chapter1?.metadata?.grade || 6,
-      board: chapter1?.metadata?.board || "CBSE",
+      grade: 6,
+      board: "CBSE",
       created_at: new Date().toISOString()
     }, { onConflict: "id" });
     if (studentErr) {
@@ -1230,16 +1423,39 @@ async function ensureSchemaEntities(
     console.warn("Supabase ensure student error:", e?.message);
   }
 
-  // 3. Ensure topics exist in public.topics
+  // 3. Ensure topics exist in public.topics for both chapters so foreign keys never fail
   try {
+    const topicsToUpsert: any[] = [];
+    
+    // Chapter 1 topics
     if (chapter1 && Array.isArray(chapter1.topics)) {
-      const topicsToUpsert = chapter1.topics.map((t: any, idx: number) => ({
-        id: t.topic_id,
-        chapter_id: effectiveChapterId,
-        title: t.title,
-        sequence: idx + 1,
-        learning_objective: t.learning_objective || ""
-      }));
+      const ch1Id = effectiveChapterId === "chapter-2" ? "chapter-1" : effectiveChapterId;
+      chapter1.topics.forEach((t: any, idx: number) => {
+        topicsToUpsert.push({
+          id: t.topic_id,
+          chapter_id: ch1Id,
+          title: t.title,
+          sequence: idx + 1,
+          learning_objective: t.learning_objective || ""
+        });
+      });
+    }
+
+    // Chapter 2 topics
+    if (chapter2 && Array.isArray(chapter2.topics)) {
+      const ch2Id = effectiveChapterId === "chapter-2" ? effectiveChapterId : "chapter-2";
+      chapter2.topics.forEach((t: any, idx: number) => {
+        topicsToUpsert.push({
+          id: t.topic_id,
+          chapter_id: ch2Id,
+          title: t.title,
+          sequence: idx + 1,
+          learning_objective: t.learning_objective || ""
+        });
+      });
+    }
+
+    if (topicsToUpsert.length > 0) {
       const { error: topicsErr } = await client.from("topics").upsert(topicsToUpsert, { onConflict: "id" });
       if (topicsErr) {
         console.warn("Supabase topics upsert notice:", topicsErr.message);
@@ -1252,13 +1468,14 @@ async function ensureSchemaEntities(
   return { effectiveChapterId, effectiveTopicId: topicId };
 }
 
-// Seed/Import Chapter 1 Curriculum data into Supabase
+// Seed/Import Curriculum data into Supabase (Both Chapter 1 and Chapter 2)
 app.post("/api/supabase/seed", async (req, res) => {
   const client = getSupabaseClient();
   const chapter1 = getChapter1Json();
+  const chapter2 = getChapter2Json();
 
-  if (!chapter1) {
-    return res.status(500).json({ error: "Chapter 1 content pack JSON could not be loaded for seeding." });
+  if (!chapter1 && !chapter2) {
+    return res.status(500).json({ error: "Curriculum content pack JSON could not be loaded for seeding." });
   }
 
   if (!client) {
@@ -1271,34 +1488,36 @@ app.post("/api/supabase/seed", async (req, res) => {
   try {
     const defaultStudentId = req.body?.student_id || "student-1";
     const studentName = req.body?.student_name || "Student";
-    const requestedChapterId = `chapter-${chapter1.metadata.chapter_number}`; // 'chapter-1'
 
-    const { effectiveChapterId } = await ensureSchemaEntities(client, defaultStudentId, studentName, requestedChapterId);
+    // Ensure Chapter 1 and Chapter 2 entities and topics in DB
+    await ensureSchemaEntities(client, defaultStudentId, studentName, "chapter-1");
+    await ensureSchemaEntities(client, defaultStudentId, studentName, "chapter-2");
 
-    // Initialize starter student_progress records if not existing
-    const starterProgress = chapter1.topics.map((t: any, idx: number) => ({
-      student_id: defaultStudentId,
-      chapter_id: effectiveChapterId,
-      topic_id: t.topic_id,
-      completion_percent: idx < 3 ? 100 : (idx === 3 ? 55 : 0),
-      accuracy: idx < 3 ? 85 : (idx === 3 ? 60 : 0),
-      attempts: idx < 3 ? 2 : (idx === 3 ? 1 : 0),
-      updated_at: new Date().toISOString()
-    }));
+    // Initialize starter student_progress records for Chapter 1 only (Chapter 2 starts at 0% progress!)
+    if (chapter1 && Array.isArray(chapter1.topics)) {
+      const starterProgress = chapter1.topics.map((t: any, idx: number) => ({
+        student_id: defaultStudentId,
+        chapter_id: "chapter-1",
+        topic_id: t.topic_id,
+        completion_percent: idx < 3 ? 100 : (idx === 3 ? 55 : 0),
+        accuracy: idx < 3 ? 85 : (idx === 3 ? 60 : 0),
+        attempts: idx < 3 ? 2 : (idx === 3 ? 1 : 0),
+        updated_at: new Date().toISOString()
+      }));
 
-    const { error: progErr } = await client.from("student_progress").upsert(starterProgress, { 
-      onConflict: "student_id,chapter_id,topic_id" 
-    });
-    if (progErr) console.warn("Supabase seed progress warning:", progErr.message);
+      const { error: progErr } = await client.from("student_progress").upsert(starterProgress, { 
+        onConflict: "student_id,chapter_id,topic_id" 
+      });
+      if (progErr) console.warn("Supabase seed progress warning:", progErr.message);
+    }
 
     return res.json({
       success: true,
-      message: "Chapter 1 content and student records successfully seeded to Supabase!",
-      chapter: {
-        id: effectiveChapterId,
-        title: chapter1.metadata.chapter_title,
-        total_topics: chapter1.topics?.length || 6
-      }
+      message: "Chapters and topics successfully seeded to Supabase!",
+      chapters: [
+        { id: "chapter-1", title: chapter1?.metadata?.chapter_title, total_topics: chapter1?.topics?.length || 6 },
+        { id: "chapter-2", title: chapter2?.metadata?.chapter_title, total_topics: chapter2?.topics?.length || 6 }
+      ]
     });
   } catch (err: any) {
     console.error("Error in /api/supabase/seed:", err);
@@ -1310,9 +1529,11 @@ app.post("/api/supabase/seed", async (req, res) => {
 app.get("/api/supabase/curriculum", async (req, res) => {
   const client = getSupabaseClient();
   const chapter1 = getChapter1Json();
+  const chapter2 = getChapter2Json();
+  const localChapters = [chapter1, chapter2].filter(Boolean);
 
   if (!client) {
-    return res.json({ source: "local_json", chapters: [chapter1] });
+    return res.json({ source: "local_json", chapters: localChapters });
   }
 
   try {
@@ -1322,12 +1543,12 @@ app.get("/api/supabase/curriculum", async (req, res) => {
       .order("chapter_number", { ascending: true });
 
     if (chErr || !dbChapters || dbChapters.length === 0) {
-      return res.json({ source: "local_json", chapters: [chapter1] });
+      return res.json({ source: "local_json", chapters: localChapters });
     }
 
     return res.json({ source: "supabase", chapters: dbChapters });
   } catch (err: any) {
-    return res.json({ source: "local_json", chapters: [chapter1], error: err?.message });
+    return res.json({ source: "local_json", chapters: localChapters, error: err?.message });
   }
 });
 

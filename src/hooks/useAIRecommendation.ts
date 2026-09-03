@@ -2,7 +2,12 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { AIRecommendationResult, UserProgressData, Topic } from '../types';
 import { fetchAIRecommendations, buildPerformancePayload } from '../services/recommendationService';
 
-export function useAIRecommendation(progress: UserProgressData, topics: Topic[]) {
+export function useAIRecommendation(
+  progress: UserProgressData, 
+  topics: Topic[],
+  chapterId?: string,
+  chapterTitle?: string
+) {
   const [recommendation, setRecommendation] = useState<AIRecommendationResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFallback, setIsFallback] = useState<boolean>(false);
@@ -20,8 +25,8 @@ export function useAIRecommendation(progress: UserProgressData, topics: Topic[])
     setIsLoading(true);
 
     try {
-      const payload = buildPerformancePayload(progress, topics);
-      const res = await fetchAIRecommendations(payload);
+      const payload = buildPerformancePayload(progress, topics, chapterId);
+      const res = await fetchAIRecommendations(payload, chapterId, chapterTitle);
       
       if (isMountedRef.current) {
         if (res.success && res.data) {
@@ -36,7 +41,7 @@ export function useAIRecommendation(progress: UserProgressData, topics: Topic[])
         setIsLoading(false);
       }
     }
-  }, [progress, topics]);
+  }, [progress, topics, chapterId, chapterTitle]);
 
   useEffect(() => {
     refreshRecommendation();

@@ -23,10 +23,12 @@ import {
 } from 'lucide-react';
 import { NavigationTab } from '../types';
 import { useProgress } from '../context/ProgressContext';
-import { CHAPTER_1_DATA, getQuestionsForTopic } from '../data/chapter1Data';
+import { getTopicById, getChapter } from '../services/curriculumService';
+import { getQuestionsForTopic } from '../data/chapter1Data';
 import { useLessonTTS } from '../hooks/useLessonTTS';
 import { TTSPlayerBar } from '../components/tts/TTSPlayerBar';
 import { SectionListenButton } from '../components/tts/SectionListenButton';
+import { ScientificDiagram } from '../components/diagrams/ScientificDiagram';
 
 interface LessonPageProps {
   topicId: string;
@@ -43,16 +45,21 @@ export const LessonPage: React.FC<LessonPageProps> = ({
 }) => {
   const { 
     progress, 
+    currentChapter,
+    activeChapterId,
     markTopicCompleted, 
     recordTopicView, 
     recordQuickCheckPassed,
     setActiveTopicId 
   } = useProgress();
 
-  const topic = CHAPTER_1_DATA.topics.find(t => t.id === topicId) || CHAPTER_1_DATA.topics[0];
-  const currentIndex = CHAPTER_1_DATA.topics.findIndex(t => t.id === topic.id);
-  const nextTopic = CHAPTER_1_DATA.topics[currentIndex + 1];
-  const prevTopic = CHAPTER_1_DATA.topics[currentIndex - 1];
+  const foundTopic = getTopicById(topicId);
+  const topic = foundTopic || currentChapter.topics[0];
+  const chapter = getChapter(topic.chapterId || activeChapterId) || currentChapter;
+  
+  const currentIndex = chapter.topics.findIndex(t => t.id === topic.id);
+  const nextTopic = currentIndex !== -1 ? chapter.topics[currentIndex + 1] : undefined;
+  const prevTopic = currentIndex !== -1 ? chapter.topics[currentIndex - 1] : undefined;
 
   // Initialize Lesson Text-to-Speech (TTS) engine
   const tts = useLessonTTS(topic);
@@ -227,12 +234,12 @@ export const LessonPage: React.FC<LessonPageProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-emerald-700">
             <span className="bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">
-              Topic {topic.order} of {CHAPTER_1_DATA.totalTopics} ({topic.id})
+              Topic {topic.order} of {chapter.totalTopics} ({topic.id})
             </span>
             <span className="text-slate-300">•</span>
             <span className="text-slate-500">{topic.sourceSection}</span>
             <span className="text-slate-300">•</span>
-            <span className="text-slate-500">{CHAPTER_1_DATA.board} Grade {CHAPTER_1_DATA.grade}</span>
+            <span className="text-slate-500">{chapter.board} Grade {chapter.grade}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -330,6 +337,23 @@ export const LessonPage: React.FC<LessonPageProps> = ({
           {lesson.concept_explanation}
         </div>
       </section>
+
+      {/* Visual Diagrams Section (Alt text, captions, visual schematics, audio) */}
+      {lesson.diagrams && lesson.diagrams.length > 0 && (
+        <section id="lesson-diagrams-container" className="space-y-6">
+          {lesson.diagrams.map((diag, dIdx) => (
+            <ScientificDiagram
+              key={diag.id || dIdx}
+              diagram={diag}
+              isPlaying={tts.isPlaying && tts.currentSectionId === `diagram-${diag.id || dIdx}`}
+              isPaused={tts.isPaused && tts.currentSectionId === `diagram-${diag.id || dIdx}`}
+              onPlayAudio={() => tts.playSection(`diagram-${diag.id || dIdx}`)}
+              onPauseAudio={tts.pause}
+              onResumeAudio={tts.resume}
+            />
+          ))}
+        </section>
+      )}
 
       {/* Interactive Step-by-Step Component for the Scientific Method */}
       {lesson.steps && lesson.steps.length > 0 && (
@@ -860,7 +884,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               {lesson.quick_check.map((qText, qIdx) => (
                 <button
                   key={qIdx}
-                  onClick={() => onAskTutorWithPrompt(topic.title, `Can you guide me on how to answer this question from Chapter 1: "${qText}"?`)}
+                  onClick={() => onAskTutorWithPrompt(topic.title, `Can you guide me on how to answer this question from Chapter ${chapter.number}: "${qText}"?`)}
                   className="text-left p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200/80 hover:border-emerald-200 text-xs font-medium text-slate-700 hover:text-emerald-900 transition-all flex items-start gap-2 group"
                 >
                   <span className="text-emerald-600 font-bold shrink-0">Q{qIdx + 1}.</span>
@@ -884,7 +908,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               Great Job! You have finished Topic {topic.order}
             </h3>
             <p className="text-xs sm:text-sm text-emerald-100 max-w-xl">
-              Your Chapter 1 progress has been updated to {progress.topicProgress[topic.id]?.masteryPercentage || 100}%. Ready to move to the next topic?
+              Your Chapter {chapter.number} progress has been updated to {progress.topicProgress[topic.id]?.masteryPercentage || 100}%. Ready to move to the next topic?
             </p>
           </div>
 
@@ -901,7 +925,7 @@ export const LessonPage: React.FC<LessonPageProps> = ({
               onClick={() => onNavigate('practice')}
               className="px-6 py-3 rounded-2xl bg-white hover:bg-emerald-50 text-emerald-900 font-bold text-sm shadow-md transition-all flex items-center gap-2 shrink-0"
             >
-              <span>Take Chapter 1 Practice</span>
+              <span>Take Chapter {chapter.number} Practice</span>
               <ArrowRight className="w-4 h-4 text-emerald-700" />
             </button>
           )}

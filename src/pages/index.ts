@@ -1,5 +1,6 @@
 export * from './LandingPage';
 export * from './HomePage';
+export * from './ChaptersPage';
 export * from './LearnPage';
 export * from './LessonPage';
 export * from './TutorPage';

@@ -94,6 +94,9 @@ export interface CalculateResultsInput {
   quizTitle: string;
   quizType: 'practice' | 'chapter_test';
   timeSpentSeconds?: number;
+  chapterId?: string;
+  chapterNumber?: number;
+  chapterTitle?: string;
 }
 
 /**
@@ -107,7 +110,10 @@ export function calculateQuizResults({
   subjectiveEvaluations = {},
   quizTitle,
   quizType,
-  timeSpentSeconds = 0
+  timeSpentSeconds = 0,
+  chapterId,
+  chapterNumber,
+  chapterTitle
 }: CalculateResultsInput): QuizAttemptResult {
   const totalQuestions = questions.length;
   let totalMarks = 0;
@@ -328,6 +334,9 @@ export function calculateQuizResults({
 
   return {
     id: `result-${Date.now()}`,
+    chapterId,
+    chapterNumber,
+    chapterTitle,
     quizTitle,
     quizType,
     totalQuestions,

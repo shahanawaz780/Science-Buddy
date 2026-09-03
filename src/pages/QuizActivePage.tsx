@@ -25,7 +25,7 @@ import {
   QuizAttemptResult, 
   SubjectiveEvaluationResult
 } from '../types';
-import { getExamQuestions, getQuestionsForTopic, getQuestionsForChapter } from '../data/chapter1Data';
+import { getExamQuestions, getQuestionsForTopic, getQuestionsForChapter, getChapter } from '../services/curriculumService';
 import { useProgress } from '../context/ProgressContext';
 import { evaluateSubjectiveAnswer, evaluateBatchSubjectiveAnswers } from '../services/aiEvaluationService';
 import { calculateQuizResults } from '../services/resultsEngine';
@@ -45,8 +45,8 @@ export const QuizActivePage: React.FC<QuizActivePageProps> = ({
   onExit,
   onAskTutorWithPrompt: _onAskTutorWithPrompt
 }) => {
-  const { recordQuizResult } = useProgress();
-  const isChapterTest = config.type === 'chapter_test' || config.id === 'TEST_01';
+  const { recordQuizResult, activeChapterId } = useProgress();
+  const isChapterTest = config.type === 'chapter_test' || config.id === 'TEST_01' || config.id === 'CH2_CHAPTER_TEST';
 
   // Load questions
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
@@ -76,16 +76,17 @@ export const QuizActivePage: React.FC<QuizActivePageProps> = ({
   const [submissionStatusText, setSubmissionStatusText] = useState('Evaluating answers with Gemini AI Examiner...');
 
   useEffect(() => {
+    const targetChapterId = config.chapterId || activeChapterId;
     let selected: QuizQuestion[] = [];
     if (config.id) {
-      selected = getExamQuestions(config.id);
+      selected = getExamQuestions(config.id, targetChapterId);
     }
     
     if (selected.length === 0) {
       if (config.topicFilter) {
-        selected = getQuestionsForTopic(config.topicFilter);
+        selected = getQuestionsForTopic(config.topicFilter, targetChapterId);
       } else {
-        selected = getQuestionsForChapter();
+        selected = getQuestionsForChapter(targetChapterId);
       }
       
       if (config.questionCount && selected.length > config.questionCount) {
@@ -110,11 +111,14 @@ export const QuizActivePage: React.FC<QuizActivePageProps> = ({
     setEvaluatingMap({});
     setEvalErrorMap({});
     setActiveView('taking');
-  }, [config]);
+  }, [config, activeChapterId]);
 
   const executeSubmission = async () => {
     setIsSubmitting(true);
     setSubmissionStatusText('Evaluating answers with Gemini AI Examiner...');
+
+    const targetChapterId = config.chapterId || activeChapterId;
+    const targetChapter = getChapter(targetChapterId);
 
     // Identify all subjective & short answer questions that were answered
     const subjectiveItems = questions
@@ -126,7 +130,8 @@ export const QuizActivePage: React.FC<QuizActivePageProps> = ({
         expected_answer: q.answer,
         expected_key_points: q.expected_key_points,
         marking_criteria: q.rubric,
-        marks: q.marks || (q.type === 'subjective' ? QUIZ_SETTINGS.defaultSubjectiveMarks : QUIZ_SETTINGS.defaultShortAnswerMarks)
+        marks: q.marks || (q.type === 'subjective' ? QUIZ_SETTINGS.defaultSubjectiveMarks : QUIZ_SETTINGS.defaultShortAnswerMarks),
+        chapter_id: targetChapterId
       }));
 
     let allSubjectiveEvals: Record<string, SubjectiveEvaluationResult> = { ...practiceSubjectiveEvals };
@@ -136,7 +141,7 @@ export const QuizActivePage: React.FC<QuizActivePageProps> = ({
     if (unevaluated.length > 0) {
       setSubmissionStatusText(`Evaluating ${unevaluated.length} subjective response${unevaluated.length > 1 ? 's' : ''} with Gemini AI...`);
       try {
-        const batchResults = await evaluateBatchSubjectiveAnswers(unevaluated);
+        const batchResults = await evaluateBatchSubjectiveAnswers(unevaluated, targetChapterId);
         allSubjectiveEvals = { ...allSubjectiveEvals, ...batchResults };
       } catch (err) {
         console.warn('Batch AI evaluation failed, falling back to rule-based evaluation:', err);
@@ -149,9 +154,12 @@ export const QuizActivePage: React.FC<QuizActivePageProps> = ({
       questions,
       studentAnswers,
       subjectiveEvaluations: allSubjectiveEvals,
-      quizTitle: config.title || (isChapterTest ? 'Chapter 1 Assessment Test' : 'Chapter 1 Practice Quiz'),
+      quizTitle: config.title || (isChapterTest ? `Chapter ${targetChapter.number} Assessment Test` : `Chapter ${targetChapter.number} Practice Quiz`),
       quizType: isChapterTest ? 'chapter_test' : 'practice',
-      timeSpentSeconds: timeSpent
+      timeSpentSeconds: timeSpent,
+      chapterId: targetChapter.id,
+      chapterNumber: targetChapter.number,
+      chapterTitle: targetChapter.title
     });
 
     recordQuizResult(resultPayload);
@@ -221,13 +229,15 @@ export const QuizActivePage: React.FC<QuizActivePageProps> = ({
     setEvalErrorMap(prev => ({ ...prev, [currentQ.id]: '' }));
     setPracticeConfirmed(prev => ({ ...prev, [currentQ.id]: true }));
 
+    const targetChapterId = config.chapterId || activeChapterId;
     const res = await evaluateSubjectiveAnswer({
       question: currentQ.question,
       student_answer: currentAnswer,
       expected_answer: currentQ.answer,
       expected_key_points: currentQ.expected_key_points,
       marking_criteria: currentQ.rubric,
-      marks: currentQ.marks || (currentQ.type === 'subjective' ? 3 : 2)
+      marks: currentQ.marks || (currentQ.type === 'subjective' ? 3 : 2),
+      chapter_id: targetChapterId
     });
 
     setEvaluatingMap(prev => ({ ...prev, [currentQ.id]: false }));

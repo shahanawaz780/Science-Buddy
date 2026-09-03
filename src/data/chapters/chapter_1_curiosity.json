@@ -152,6 +152,13 @@
           "What is a hypothesis?",
           "Why is testing important?",
           "What should a scientist do if evidence does not support the hypothesis?"
+        ],
+        "key_points": [
+          "The scientific method is a 5-step systematic investigation process.",
+          "Observation leads directly to curious scientific questions.",
+          "A hypothesis is an educated, testable proposed explanation.",
+          "Experiments and testing gather evidence to verify the hypothesis.",
+          "Conclusions determine whether hypotheses are supported or need refinement."
         ]
       }
     },
@@ -226,6 +233,21 @@
           "Which theme includes seed germination?",
           "Which theme includes the solar system?",
           "Which theme includes separation of mixtures?"
+        ],
+        "key_points": [
+          "Grade 6 Science introduces five major thematic areas of inquiry.",
+          "The themes include Food, Materials, The Living World, Motion, and Natural Phenomena.",
+          "Studying themes helps connect classroom experiments with real-world observations."
+        ],
+        "important_terms": [
+          {
+            "term": "Science Theme",
+            "meaning": "A broad organizing framework linking multiple connected scientific concepts."
+          },
+          {
+            "term": "Interdisciplinary",
+            "meaning": "Connecting ideas from biology, physics, chemistry, and environmental science."
+          }
         ]
       }
     },
@@ -246,6 +268,16 @@
         "quick_check": [
           "Who can you discuss a scientific puzzle with?",
           "Why is listening to alternative hypotheses useful?"
+        ],
+        "important_terms": [
+          {
+            "term": "Scientific Collaboration",
+            "meaning": "Scientists working together in multidisciplinary teams across institutions and nations."
+          },
+          {
+            "term": "Peer Review",
+            "meaning": "The independent evaluation of scientific experiments and papers by other expert scientists."
+          }
         ]
       }
     }

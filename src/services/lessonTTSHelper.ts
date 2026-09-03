@@ -100,5 +100,22 @@ export function getLessonSectionsForTTS(topic: Topic): LessonSectionItem[] {
     });
   }
 
+  // 9. Visual Diagrams (Alt text & Captions)
+  if (lesson.diagrams && lesson.diagrams.length > 0) {
+    lesson.diagrams.forEach((diag, dIdx) => {
+      sections.push({
+        id: `diagram-${diag.id || dIdx}`,
+        title: `Diagram: ${diag.title}`,
+        text: `Scientific diagram: ${diag.title}. Caption: ${diag.caption}. Visual description: ${diag.alt}`
+      });
+    });
+  } else if (lesson.diagram) {
+    sections.push({
+      id: `diagram-${lesson.diagram.id || 0}`,
+      title: `Diagram: ${lesson.diagram.title}`,
+      text: `Scientific diagram: ${lesson.diagram.title}. Caption: ${lesson.diagram.caption}. Visual description: ${lesson.diagram.alt}`
+    });
+  }
+
   return sections;
 }

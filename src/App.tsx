@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar';
 import { 
   LandingPage,
   HomePage, 
+  ChaptersPage,
   LearnPage, 
   LessonPage, 
   TutorPage, 
@@ -23,6 +24,7 @@ import { Atom } from 'lucide-react';
 
 const PROTECTED_TABS: Set<NavigationTab> = new Set([
   'home',
+  'chapters',
   'learn',
   'lesson',
   'tutor',
@@ -45,7 +47,8 @@ function parseTabFromLocation(): { tab: NavigationTab; topicId?: string } {
   if (segment === 'forgot_password' || segment === 'forgot-password' || segment === 'reset-password') return { tab: 'forgot_password' };
   if (segment === 'landing' || segment === 'welcome') return { tab: 'landing' };
   if (segment === 'dashboard' || segment === 'home') return { tab: 'home' };
-  if (segment === 'learn' || segment === 'chapters') return { tab: 'learn' };
+  if (segment === 'chapters' || segment === 'all-chapters') return { tab: 'chapters' };
+  if (segment === 'learn') return { tab: 'learn' };
   if (segment.startsWith('lesson')) {
     const parts = segment.split('/');
     return { tab: 'lesson', topicId: parts[1] || 'T1' };
@@ -61,7 +64,7 @@ function parseTabFromLocation(): { tab: NavigationTab; topicId?: string } {
 }
 
 function ScienceBuddyApp() {
-  const { progress, activeTopicId, setActiveTopicId, setStudentName } = useProgress();
+  const { progress, activeTopicId, setActiveTopicId, currentChapter, setStudentName } = useProgress();
   const { user, isAuthenticated, isLoading, isPasswordRecoveryMode } = useAuth();
   
   const [currentTab, setCurrentTab] = useState<NavigationTab>('landing');
@@ -371,6 +374,13 @@ function ScienceBuddyApp() {
               />
             )}
 
+            {currentTab === 'chapters' && (
+              <ChaptersPage 
+                onNavigate={handleNavigate}
+                onOpenLesson={handleOpenLesson}
+              />
+            )}
+
             {currentTab === 'learn' && (
               <LearnPage 
                 onOpenLesson={handleOpenLesson} 
@@ -459,7 +469,7 @@ function ScienceBuddyApp() {
             <span>Class 6 CBSE Science Micro-Tutor</span>
             <span>•</span>
             <span className="bg-emerald-50 text-emerald-800 font-semibold px-2 py-0.5 rounded-md border border-emerald-200">
-              Chapter 1: The Wonderful World of Science
+              Chapter {currentChapter.number}: {currentChapter.title}
             </span>
           </div>
           <p className="text-slate-400">

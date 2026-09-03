@@ -17,7 +17,9 @@ import {
   LogIn,
   UserPlus,
   LogOut,
-  Settings
+  Settings,
+  Layers,
+  Check
 } from 'lucide-react';
 import { NavigationTab } from '../types';
 import { useProgress } from '../context/ProgressContext';
@@ -32,6 +34,11 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
   const { 
     progress, 
+    activeChapterId,
+    setActiveChapterId,
+    currentChapter,
+    allChapters,
+    getChapterProgress,
     setStudentName, 
     resetProgress, 
     loadSampleData,
@@ -44,17 +51,22 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
   const { user, isAuthenticated, logout } = useAuth();
 
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
+  const [showChapterDropdown, setShowChapterDropdown] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [nameInput, setNameInput] = useState(user?.fullName || progress.studentName);
   const [seedNotice, setSeedNotice] = useState<string | null>(null);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const chapterDropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowAccountDropdown(false);
+      }
+      if (chapterDropdownRef.current && !chapterDropdownRef.current.contains(event.target as Node)) {
+        setShowChapterDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -63,6 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
 
   // Main navigation items for authenticated students
   const navItems = [
+    { id: 'chapters' as NavigationTab, label: 'Chapters', icon: Layers },
     { id: 'home' as NavigationTab, label: 'Dashboard', icon: Home },
     { id: 'learn' as NavigationTab, label: 'Learn', icon: BookOpen },
     { id: 'tutor' as NavigationTab, label: 'AI Tutor', icon: Bot, badge: 'AI' },
@@ -115,10 +128,78 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
                 <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] font-semibold text-emerald-700 mt-1">
                   <Badge variant="success" size="sm">Class 6 CBSE</Badge>
                   <span className="text-slate-300 hidden sm:inline">•</span>
-                  <span className="text-slate-500 font-medium hidden sm:inline">Chapter 1</span>
+                  <span className="text-slate-600 font-bold hidden sm:inline">Ch {currentChapter.number}</span>
                 </div>
               </div>
             </button>
+
+            {/* Chapter Switcher Dropdown (Desktop & Tablet) */}
+            {isAuthenticated && (
+              <div className="relative hidden md:block" ref={chapterDropdownRef}>
+                <button
+                  id="chapter-switcher-pill"
+                  onClick={() => setShowChapterDropdown(!showChapterDropdown)}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200/80 transition-colors"
+                  title="Switch Chapter"
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <span className="truncate max-w-[140px]">Ch {currentChapter.number}: {currentChapter.title}</span>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+                </button>
+
+                {showChapterDropdown && (
+                  <div className="absolute left-0 mt-2 w-72 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 z-50 animate-in fade-in-50">
+                    <div className="px-3 py-1.5 border-b border-slate-100 flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Class 6 Chapters</span>
+                      <button
+                        onClick={() => {
+                          setShowChapterDropdown(false);
+                          onNavigate('chapters');
+                        }}
+                        className="text-[11px] text-blue-600 font-bold hover:underline"
+                      >
+                        View All
+                      </button>
+                    </div>
+                    <div className="max-h-64 overflow-y-auto py-1">
+                      {allChapters.map(ch => {
+                        const isChActive = ch.id === activeChapterId;
+                        const chProg = getChapterProgress(ch.id);
+                        return (
+                          <button
+                            key={ch.id}
+                            id={`switch-to-ch-${ch.number}`}
+                            onClick={() => {
+                              setActiveChapterId(ch.id);
+                              setShowChapterDropdown(false);
+                              if (activeTab === 'chapters') {
+                                onNavigate('learn');
+                              }
+                            }}
+                            className={`w-full px-3 py-2 text-left flex items-start justify-between gap-2 hover:bg-slate-50 transition-colors ${
+                              isChActive ? 'bg-emerald-50/70 text-emerald-900 font-bold' : 'text-slate-700'
+                            }`}
+                          >
+                            <div className="min-w-0">
+                              <div className="text-xs font-semibold flex items-center gap-1.5">
+                                <span>Ch {ch.number}: {ch.title}</span>
+                                {!ch.isAvailable && (
+                                  <span className="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.2 rounded font-normal">Coming Soon</span>
+                                )}
+                              </div>
+                              <div className="text-[10px] text-slate-400 mt-0.5">
+                                {ch.totalTopics} Topics • {chProg.completionPercentage}% Mastered
+                              </div>
+                            </div>
+                            {isChActive && <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-1" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Desktop Navigation Links — ONLY Rendered for Authenticated Students */}
@@ -127,6 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = activeTab === item.id || 
+                  (item.id === 'chapters' && activeTab === 'chapters') ||
                   (item.id === 'home' && activeTab === 'home') ||
                   (item.id === 'learn' && activeTab === 'lesson') ||
                   (item.id === 'practice' && (activeTab === 'quiz_active' || activeTab === 'result'));
@@ -136,7 +218,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
                     key={item.id}
                     id={`nav-link-${item.id}`}
                     onClick={() => onNavigate(item.id)}
-                    className={`relative flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer ${
+                    className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer ${
                       isActive
                         ? 'bg-white text-emerald-900 shadow-2xs border border-slate-200/90 font-bold'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
@@ -320,6 +402,22 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
                       /* WHEN USER IS LOGGED IN: Show My Profile, My Progress & Logout */
                       <>
                         <button
+                          id="menu-chapters-btn"
+                          role="menuitem"
+                          onClick={() => {
+                            setShowAccountDropdown(false);
+                            onNavigate('chapters');
+                          }}
+                          className="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5 transition-colors cursor-pointer"
+                        >
+                          <Layers className="w-4 h-4 text-indigo-600 shrink-0" />
+                          <div>
+                            <span className="block font-bold">All Science Chapters</span>
+                            <span className="text-[10px] font-normal text-slate-400">Switch or explore chapters</span>
+                          </div>
+                        </button>
+
+                        <button
                           id="menu-profile-btn"
                           role="menuitem"
                           onClick={() => {
@@ -402,10 +500,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
           aria-label="Mobile Navigation"
           className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 shadow-lg"
         >
-          <div className="grid grid-cols-5 gap-1">
+          <div className="grid grid-cols-6 gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id || 
+                (item.id === 'chapters' && activeTab === 'chapters') ||
                 (item.id === 'home' && activeTab === 'home') ||
                 (item.id === 'learn' && activeTab === 'lesson') ||
                 (item.id === 'practice' && (activeTab === 'quiz_active' || activeTab === 'result'));
@@ -431,7 +530,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
                       </span>
                     )}
                   </div>
-                  <span className="text-[10px] mt-0.5 tracking-tight line-clamp-1">{item.label}</span>
+                  <span className="text-[9px] mt-0.5 tracking-tight line-clamp-1">{item.label}</span>
                 </button>
               );
             })}

@@ -77,18 +77,20 @@ export const ResultPage: React.FC<ResultPageProps> = ({
     percentage >= 80 ? 'Strong' : percentage >= 60 ? 'Developing' : 'Needs Practice'
   );
 
+  const chapterDisplay = result.chapterTitle || (result.chapterNumber ? `Chapter ${result.chapterNumber}` : 'this chapter');
+
   let categoryIcon = '🎯';
   let categoryBadgeClass = 'bg-rose-50 text-rose-800 border-rose-200';
-  let categoryDescription = 'Keep going! Review key concepts, definitions, and examples in Chapter 1 to build solid scientific understanding.';
+  let categoryDescription = `Keep going! Review key concepts, definitions, and examples in ${chapterDisplay} to build solid scientific understanding.`;
 
   if (overallCategory === 'Strong') {
     categoryIcon = '🌟';
     categoryBadgeClass = 'bg-emerald-50 text-emerald-800 border-emerald-200';
-    categoryDescription = 'Outstanding mastery of Chapter 1! You demonstrate excellent scientific curiosity, methodology, and conceptual clarity.';
+    categoryDescription = `Outstanding mastery of ${chapterDisplay}! You demonstrate excellent scientific curiosity, methodology, and conceptual clarity.`;
   } else if (overallCategory === 'Developing') {
     categoryIcon = '📈';
     categoryBadgeClass = 'bg-amber-50 text-amber-800 border-amber-200';
-    categoryDescription = 'Good progress! Reviewing a few specific topics and definitions will help you score top marks in upcoming school assessments.';
+    categoryDescription = `Good progress in ${chapterDisplay}! Reviewing a few specific topics and definitions will help you score top marks in upcoming school assessments.`;
   }
 
   // Group topics into categories
@@ -140,7 +142,7 @@ export const ResultPage: React.FC<ResultPageProps> = ({
         recentActivity: `Completed ${result.quizTitle} scoring ${result.score}/${result.totalMarks} (${result.percentage}%).`
       };
 
-      const res = await fetchAIRecommendations(payload);
+      const res = await fetchAIRecommendations(payload, result.chapterId, result.chapterTitle);
       if (isMounted && res.success && res.data) {
         setAiRecommendation(res.data);
       }
@@ -172,7 +174,9 @@ export const ResultPage: React.FC<ResultPageProps> = ({
       expected_answer: ua.correct_answer,
       expected_key_points: ua.expected_key_points,
       marking_criteria: ua.rubric,
-      marks: ua.maxScore
+      marks: ua.maxScore,
+      chapter_id: result.chapterId,
+      chapter_number: result.chapterNumber
     });
     setEvaluatingQuestionId(null);
 

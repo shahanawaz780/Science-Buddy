@@ -4,16 +4,19 @@ import {
   CheckCircle2, 
   Clock, 
   ArrowRight, 
-  Sparkles,
-  Layers,
-  TestTube,
-  Lightbulb,
-  Compass,
-  Users,
-  Check
+  Sparkles, 
+  Layers, 
+  TestTube, 
+  Lightbulb, 
+  Compass, 
+  Users, 
+  Check,
+  ChevronRight,
+  Eye,
+  Atom,
+  Lock
 } from 'lucide-react';
 import { useProgress } from '../context/ProgressContext';
-import { CHAPTER_1_DATA } from '../data/chapter1Data';
 import { Button, Card, Badge, ProgressBar } from '../components/ui';
 
 interface LearnPageProps {
@@ -21,7 +24,16 @@ interface LearnPageProps {
 }
 
 export const LearnPage: React.FC<LearnPageProps> = ({ onOpenLesson }) => {
-  const { progress, overallProgressPercentage, completedTopicsCount } = useProgress();
+  const { 
+    progress, 
+    currentChapter, 
+    allChapters, 
+    activeChapterId, 
+    setActiveChapterId, 
+    getChapterProgress 
+  } = useProgress();
+
+  const chapterProg = getChapterProgress(currentChapter.id);
 
   const getTopicIcon = (iconName: string) => {
     switch (iconName) {
@@ -38,55 +50,93 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onOpenLesson }) => {
   return (
     <div id="learn-screen" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 animate-in fade-in duration-200 pb-24 md:pb-12">
       
+      {/* Chapter Selection Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+        {allChapters.map((ch) => {
+          const isActive = ch.id === activeChapterId;
+          const prog = getChapterProgress(ch.id);
+
+          return (
+            <button
+              key={ch.id}
+              id={`chapter-tab-btn-${ch.number}`}
+              onClick={() => setActiveChapterId(ch.id)}
+              className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs font-bold border transition-all duration-150 shrink-0 cursor-pointer ${
+                isActive
+                  ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm shadow-emerald-600/20 ring-2 ring-emerald-500/30'
+                  : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold ${
+                isActive ? 'bg-white text-emerald-700' : 'bg-slate-100 text-slate-700'
+              }`}>
+                {ch.number}
+              </span>
+              <span className="truncate max-w-[180px] sm:max-w-[240px]">{ch.title}</span>
+              {prog.completionPercentage > 0 && (
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                  isActive ? 'bg-emerald-700 text-emerald-100' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                }`}>
+                  {prog.completionPercentage}%
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
       {/* Header Banner */}
       <Card variant="default" padding="lg" className="space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="success" size="sm">
-                {CHAPTER_1_DATA.board} • Grade {CHAPTER_1_DATA.grade} {CHAPTER_1_DATA.subject}
+                {currentChapter.board} • Grade {currentChapter.grade} {currentChapter.subject}
               </Badge>
               <Badge variant="default" size="sm">
-                Textbook: {CHAPTER_1_DATA.textbook}
+                Textbook: {currentChapter.textbook}
+              </Badge>
+              <Badge variant="info" size="sm">
+                NCERT Aligned
               </Badge>
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-heading text-slate-900 tracking-tight">
-              Chapter {CHAPTER_1_DATA.number}: {CHAPTER_1_DATA.title}
+              Chapter {currentChapter.number}: {currentChapter.title}
             </h1>
             <p className="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
-              {CHAPTER_1_DATA.description}
+              {currentChapter.description}
             </p>
           </div>
 
           {/* Chapter Progress Gauge */}
           <div className="shrink-0 bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-4 min-w-[220px]">
             <div className="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow-2xs">
-              {overallProgressPercentage}%
+              {chapterProg.completionPercentage}%
             </div>
             <div>
               <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
-                Chapter Progress
+                Chapter Mastery
               </span>
               <span className="text-sm font-bold text-slate-800">
-                {completedTopicsCount} of {CHAPTER_1_DATA.totalTopics} Completed
+                {chapterProg.completedTopics} of {currentChapter.totalTopics} Completed
               </span>
             </div>
           </div>
         </div>
 
         {/* Linear progress indicator */}
-        <ProgressBar value={overallProgressPercentage} size="sm" variant="gradient" />
+        <ProgressBar value={chapterProg.completionPercentage} size="sm" variant="gradient" />
       </Card>
 
-      {/* Learning Objectives from JSON */}
-      {CHAPTER_1_DATA.learningObjectives && CHAPTER_1_DATA.learningObjectives.length > 0 && (
+      {/* Learning Objectives from current chapter */}
+      {currentChapter.learningObjectives && currentChapter.learningObjectives.length > 0 && (
         <section id="chapter-learning-objectives" className="bg-emerald-50/70 rounded-3xl p-6 border border-emerald-200/80">
           <h2 className="text-sm font-bold uppercase tracking-wider text-emerald-900 flex items-center gap-2 mb-3">
             <Sparkles className="w-4 h-4 text-emerald-600" />
             <span>Chapter Learning Objectives</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm text-emerald-950 font-medium">
-            {CHAPTER_1_DATA.learningObjectives.map((obj, i) => (
+            {currentChapter.learningObjectives.map((obj, i) => (
               <div key={i} className="flex items-start gap-2.5 bg-white/90 p-3 rounded-2xl border border-emerald-200/60 shadow-2xs">
                 <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                   <Check className="w-3 h-3" />
@@ -103,13 +153,13 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onOpenLesson }) => {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold font-heading text-slate-900 flex items-center gap-2">
             <Layers className="w-5 h-5 text-emerald-600" />
-            <span>Chapter Topics ({CHAPTER_1_DATA.topics.length})</span>
+            <span>Chapter Topics ({currentChapter.topics.length})</span>
           </h2>
-          <span className="text-xs text-slate-500 font-medium">Select any topic to begin</span>
+          <span className="text-xs text-slate-500 font-medium">Select any topic to begin learning</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {CHAPTER_1_DATA.topics.map((topic) => {
+          {currentChapter.topics.map((topic) => {
             const topicProgress = progress.topicProgress[topic.id];
             const isCompleted = topicProgress?.completed;
             const mastery = topicProgress?.masteryPercentage || 0;
